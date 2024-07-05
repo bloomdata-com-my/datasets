@@ -2,7 +2,7 @@
 
 This repository contains a collection of retail and e-commerce datasets for data analysis, machine learning, and large language model projects. It is designed to facilitate collaboration with multiple parties. The datasets include customer information, geolocation data, order details, product information, and seller information. These datasets are sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). To optimize performance with our columnar-based database, we flattened the tables and introduced new transformed features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
 
-#### Step 1: Reading all csv files from kaggle, filling missing values, handling duplicated values, and storing in columnar-based database
+#### Step 1: Reading all csv files from kaggle, filling missing values, handling duplicated values, cleaning unnecessary data, and storing in columnar-based database
 
 #### customers table:
 ```
