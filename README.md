@@ -2,13 +2,18 @@
 
 This repository is designed to facilitate collaboration with multiple parties by providing extracted and transformed datasets.
 
-All Parquet files are compressed using the ZSTD compression method.
+We also saved all the outputs in Parquet files, which are compressed using the ZSTD compression method.
 
 The original datasets can be found on [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
 
-Below are examples showing the first 3 rows of each parquet file:
+### Steps for Preparing Outputs
+The following steps were taken to prepare the outputs. Access to the codes can be requested by contacting cr.ooi@bloomdata.com.my.
 
-`customers.parquet`
+### 1. Reading All CSV Files, Filling Missing Values, and Storing in Database
+
+Below are examples showing the first 3 rows of each table in the database:
+
+`customers table` or `customers.parquet`
 ```
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
@@ -19,7 +24,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 ```
 
-`geolocation.parquet`
+`geolocation table` or `geolocation.parquet`
 ```
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat    | geolocation_lng    | geolocation_city | geolocation_state |
@@ -30,7 +35,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 ```
 
-`order_items.parquet`
+`order_items table` or `order_items.parquet`
 ```
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
 |   | order_id                         | order_item_id | product_id                       | seller_id                        | shipping_limit_date | price | freight_value |
@@ -41,7 +46,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
 ```
 
-`order_payments.parquet`
+`order_payments table` or `order_payments.parquet`
 ```
 +---+----------------------------------+--------------------+--------------+----------------------+---------------+
 |   | order_id                         | payment_sequential | payment_type | payment_installments | payment_value |
@@ -63,7 +68,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
 ```
 
-`orders.parquet`
+`orders table` or `orders.parquet`
 ```
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
 |   | order_id                         | customer_id                      | order_status | order_purchase_timestamp | order_approved_at   | order_delivered_carrier_date | order_delivered_customer_date | order_estimated_delivery_date |
@@ -74,7 +79,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
 ```
 
-`products.parquet`
+`products table` or `products.parquet`
 ```
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
@@ -85,7 +90,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 ```
 
-`product_category_name_translation.parquet`
+`product_category_name_translation table` or `product_category_name_translation.parquet`
 ```
 +---+------------------------+-------------------------------+
 |   | product_category_name  | product_category_name_english |
@@ -96,7 +101,7 @@ Below are examples showing the first 3 rows of each parquet file:
 +---+------------------------+-------------------------------+
 ```
 
-`sellers.parquet`
+`sellers table` or `sellers.parquet`
 ```
 +---+----------------------------------+------------------------+----------------+--------------+
 |   | seller_id                        | seller_zip_code_prefix | seller_city    | seller_state |
@@ -105,4 +110,18 @@ Below are examples showing the first 3 rows of each parquet file:
 | 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | mogi guacu     | SP           |
 | 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | rio de janeiro | RJ           |
 +---+----------------------------------+------------------------+----------------+--------------+
+```
+
+### 2. Replacing the Original Product Category Names in Portuguese with Their Translated English Names Using the Products and Product_Category_Name_Translation Tables
+Below is an example showing the first 3 rows of the transformed products table in the database:
+
+`transformed_products` or `transformed_products.parquet`
+```
++---+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+|   | product_id                       | translated_product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
++---+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+| 0 | 1e9e8ef04dbcff4541ed26657ea517e5 | perfumery                        | 40.0                | 287.0                      | 1.0                | 225.0            | 16.0              | 10.0              | 14.0             |
+| 1 | 3aa071139cb16b67ca9e5dea641aaa2f | art                              | 44.0                | 276.0                      | 1.0                | 1000.0           | 30.0              | 18.0              | 20.0             |
+| 2 | 96bd76ec8810374ed1b65e291975717f | sports_leisure                   | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
++---+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 ```
