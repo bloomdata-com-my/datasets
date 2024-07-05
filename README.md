@@ -2,13 +2,11 @@
 
 This repository contains a collection of retail and e-commerce datasets for data analysis, machine learning, and large language model projects. It is designed to facilitate collaboration with multiple parties. The datasets include customer information, geolocation data, order details, product information, and seller information. These datasets are sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). To optimize performance with our columnar-based database, we flattened the tables and introduced new transformed features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
 
-#### Step 1: Reading All CSV Files, Filling Missing Values, and Storing in Database
+#### Step 1: Reading All CSV Files from Kaggle, Filling Missing Values, and Storing in Database
 
-Below are examples showing the first 3 rows of each table in the database and the missing value count in each column:
-
-* customers table:
+#### customers table:
 ```
-customers table:
+showing the first 3 rows of customers table:
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -17,7 +15,7 @@ customers table:
 | 2 | 4e7b3e00288586ebd08712fdd0374a03 | 060e732b5b29e8181a18229c7b0b2b5e | 1151                     | sao paulo             | SP             |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 
-counting the missing value in each column:
+customers table has zero missing value across all the columns.
 +---+--------------------------+----------------+
 |   | Column                   | Missing Values |
 +---+--------------------------+----------------+
@@ -27,12 +25,11 @@ counting the missing value in each column:
 | 3 | customer_city            |       0        |
 | 4 | customer_state           |       0        |
 +---+--------------------------+----------------+
-
-The `customers table` has zero missing value.
 ```
 
-#### geolocation table
+#### geolocation table:
 ```
+showing the first 3 rows of geolocation table:
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat    | geolocation_lng    | geolocation_city | geolocation_state |
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
@@ -40,6 +37,8 @@ The `customers table` has zero missing value.
 | 1 | 1046                        | -23.54608112703553 | -46.64482029837157 | sao paulo        | SP                |
 | 2 | 1046                        | -23.54612896641469 | -46.64295148361138 | sao paulo        | SP                |
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
+
+geolocation table has zero missing value across all the columns.
 +---+-----------------------------+----------------+
 |   | Column                      | Missing Values |
 +---+-----------------------------+----------------+
@@ -50,10 +49,10 @@ The `customers table` has zero missing value.
 | 4 | geolocation_state           |       0        |
 +---+-----------------------------+----------------+
 ```
-The `geolocation table` has zero missing value.
 
-#### order_items table
+#### order_items table:
 ```
+showing the first 3 rows of order_items table:
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
 |   | order_id                         | order_item_id | product_id                       | seller_id                        | shipping_limit_date | price | freight_value |
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
@@ -61,6 +60,8 @@ The `geolocation table` has zero missing value.
 | 1 | 00018f77f2f0320c557190d7a144bdd3 | 1             | e5f2d52b802189ee658865ca93d83a8f | dd7ddc04e1b6c2c614352b383efe2d36 | 2017-05-03 11:05:13 | 239.9 | 19.93         |
 | 2 | 000229ec398224ef6ca0657da4fc703e | 1             | c777355d18b72b67abbeef9df44fd0fd | 5b51032eddd242adc84c38acab88f23d | 2018-01-18 14:48:30 | 199.0 | 17.87         |
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
+
+order_items table has zero missing value across all the columns.
 +---+---------------------+----------------+
 |   | Column              | Missing Values |
 +---+---------------------+----------------+
@@ -73,7 +74,6 @@ The `geolocation table` has zero missing value.
 | 6 | freight_value       |       0        |
 +---+---------------------+----------------+
 ```
-The `order_items table` has zero missing value.
 
 #### order_payments table
 ```
