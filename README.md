@@ -7,7 +7,7 @@ We also saved all the outputs in Parquet files, which are compressed using the Z
 The original datasets can be found on [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
 
 ### Steps for Preparing Outputs
-The following steps were taken to prepare the outputs. Access to the codes can be requested by contacting cr.ooi@bloomdata.com.my.
+The following steps were taken to prepare the outputs. To optimize performance with our columnar-based database, we flattened the tables instead of using nested JSON structures. Access to the codes can be requested by contacting cr.ooi@bloomdata.com.my.
 
 ### 1. Reading All CSV Files, Filling Missing Values, and Storing in Database
 
@@ -140,6 +140,18 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 +---+----------------------------------+----------------------------------+--------------------------+---------------------+---------------------+-----------------------+----------------+
 ```
 
+278 missing values were noticed after joining the `customers table` and `geolocation table` since these `customer_zip_code_prefix` were not found in the `geolocation table`.
+```
+Missing values in each column:
+customer_id                   0
+customer_unique_id            0
+customer_zip_code_prefix      0
+customer_lat                278
+customer_lng                278
+customer_city                 0
+customer_state                0
+```
+
 `transformed_sellers table` or `transformed_sellers.parquet`
 ```
 +---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
@@ -149,6 +161,17 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 | 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | -22.38343651404282  | -46.947926542619655 | mogi guacu     | SP           |
 | 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | -22.909572437655488 | -43.177703112986904 | rio de janeiro | RJ           |
 +---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
+```
+
+7 missing values were noticed after joining the `sellers table` and `geolocation table` since these `seller_zip_code_prefix` were not found in the `geolocation table`.
+```
+Missing values in each column:
+seller_id                 0
+seller_zip_code_prefix    0
+seller_lat                7
+seller_lng                7
+seller_city               0
+seller_state              0
 ```
 
 ### 4. Grouping by Order ID Column in the Order Items Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
