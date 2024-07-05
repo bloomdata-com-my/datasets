@@ -6,7 +6,7 @@ The original datasets can be found on [Kaggle](https://www.kaggle.com/datasets/o
 
 ### Steps for Preparing Outputs
 
-The following steps were taken to prepare the outputs. To optimize performance with our columnar-based database, we flattened the tables instead of using nested JSON structures. Access to the codes can be requested by contacting cr.ooi@bloomdata.com.my. We also saved all the outputs in Parquet files, which are compressed using the ZSTD compression method.
+The following steps were taken to prepare the outputs. To optimize performance with our columnar-based database, we flattened the tables and introduced additional features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
 
 ### 1. Reading All CSV Files, Filling Missing Values, and Storing in Database
 
@@ -287,15 +287,46 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 `transformed_sellers table` has some missing values. These missing values occur because certain seller_zip_code_prefix entries in the `sellers table` were not found in the `geolocation table`.
 
 ### 4. Grouping by Order ID Column in the Order Items Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
-Below is an the example showing the first 3 rows of the transformed_order_items tables in the database:
+Below is an the example showing the first 3 rows of the transformed_order_items tables in the database and the missing value count in each column:
 
-`transformed_order_items table` or `transformed_order_items.parquet`
+#### transformed_order_items table
 ```
-+---+----------------------------------+------------------+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+----------------------------------+------------------------+---------------------+---------------------+---------------+--------------+---------------------+-------+-------------+---------------+---------------------+
-|   | order_id                         | order_item_count | product_id                       | translated_product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm | seller_id                        | seller_zip_code_prefix | seller_lat          | seller_lng          | seller_city   | seller_state | shipping_limit_date | price | total_price | freight_value | total_freight_value |
-+---+----------------------------------+------------------+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+----------------------------------+------------------------+---------------------+---------------------+---------------+--------------+---------------------+-------+-------------+---------------+---------------------+
-| 0 | 00010242fe8c5a6d1ba2dd792cb16214 | 1                | 4244733e06e7ecb4970a6e2683c13e61 | cool_stuff                       | 58.0                | 598.0                      | 4.0                | 650.0            | 28.0              | 9.0               | 14.0             | 48436dade18ac8b2bce089ec2a041202 | 27277                  | -22.496952789883665 | -44.127492009916175 | volta redonda | SP           | 2017-09-19 09:45:35 | 58.9  | 58.9        | 13.29         | 13.29               |
-| 1 | 00018f77f2f0320c557190d7a144bdd3 | 1                | e5f2d52b802189ee658865ca93d83a8f | pet_shop                         | 56.0                | 239.0                      | 2.0                | 30000.0          | 50.0              | 30.0              | 40.0             | dd7ddc04e1b6c2c614352b383efe2d36 | 3471                   | -23.565095619050492 | -46.51856509433426  | sao paulo     | SP           | 2017-05-03 11:05:13 | 239.9 | 239.9       | 19.93         | 19.93               |
-| 2 | 000229ec398224ef6ca0657da4fc703e | 1                | c777355d18b72b67abbeef9df44fd0fd | furniture_decor                  | 59.0                | 695.0                      | 2.0                | 3050.0           | 33.0              | 13.0              | 33.0             | 5b51032eddd242adc84c38acab88f23d | 37564                  | -22.26258413023529  | -46.1711239405763   | borda da mata | MG           | 2018-01-18 14:48:30 | 199.0 | 199.0       | 17.87         | 17.87               |
-+---+----------------------------------+------------------+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+----------------------------------+------------------------+---------------------+---------------------+---------------+--------------+---------------------+-------+-------------+---------------+---------------------+
++---+----------------------------------+------------------+----------------------------------+-----------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+----------------------------------+------------------------+---------------------+---------------------+---------------+--------------+---------------------+-------+-------------+---------------+---------------------+
+|   | order_id                         | order_item_count | product_id                       | product_category_name | translated_product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm | seller_id                        | seller_zip_code_prefix | seller_lat          | seller_lng          | seller_city   | seller_state | shipping_limit_date | price | total_price | freight_value | total_freight_value |
++---+----------------------------------+------------------+----------------------------------+-----------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+----------------------------------+------------------------+---------------------+---------------------+---------------+--------------+---------------------+-------+-------------+---------------+---------------------+
+| 0 | 00010242fe8c5a6d1ba2dd792cb16214 | 1                | 4244733e06e7ecb4970a6e2683c13e61 | cool_stuff            | cool_stuff                       | 58.0                | 598.0                      | 4.0                | 650.0            | 28.0              | 9.0               | 14.0             | 48436dade18ac8b2bce089ec2a041202 | 27277                  | -22.496952789883665 | -44.127492009916175 | volta redonda | SP           | 2017-09-19 09:45:35 | 58.9  | 58.9        | 13.29         | 13.29               |
+| 1 | 00018f77f2f0320c557190d7a144bdd3 | 1                | e5f2d52b802189ee658865ca93d83a8f | pet_shop              | pet_shop                         | 56.0                | 239.0                      | 2.0                | 30000.0          | 50.0              | 30.0              | 40.0             | dd7ddc04e1b6c2c614352b383efe2d36 | 3471                   | -23.565095619050492 | -46.51856509433426  | sao paulo     | SP           | 2017-05-03 11:05:13 | 239.9 | 239.9       | 19.93         | 19.93               |
+| 2 | 000229ec398224ef6ca0657da4fc703e | 1                | c777355d18b72b67abbeef9df44fd0fd | moveis_decoracao      | furniture_decor                  | 59.0                | 695.0                      | 2.0                | 3050.0           | 33.0              | 13.0              | 33.0             | 5b51032eddd242adc84c38acab88f23d | 37564                  | -22.26258413023529  | -46.1711239405763   | borda da mata | MG           | 2018-01-18 14:48:30 | 199.0 | 199.0       | 17.87         | 17.87               |
++---+----------------------------------+------------------+----------------------------------+-----------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+----------------------------------+------------------------+---------------------+---------------------+---------------+--------------+---------------------+-------+-------------+---------------+---------------------+
++----+----------------------------------+----------------+
+|    | Column                           | Missing Values |
++----+----------------------------------+----------------+
+| 0  | order_id                         |       0        |
+| 1  | order_item_count                 |       0        |
+| 2  | product_id                       |       0        |
+| 3  | product_category_name            |       0        |
+| 4  | translated_product_category_name |       0        |
+| 5  | product_name_lenght              |      1389      |
+| 6  | product_description_lenght       |      1389      |
+| 7  | product_photos_qty               |      1389      |
+| 8  | product_weight_g                 |       16       |
+| 9  | product_length_cm                |       16       |
+| 10 | product_height_cm                |       16       |
+| 11 | product_width_cm                 |       16       |
+| 12 | seller_id                        |       0        |
+| 13 | seller_zip_code_prefix           |       0        |
+| 14 | seller_lat                       |      216       |
+| 15 | seller_lng                       |      216       |
+| 16 | seller_city                      |       0        |
+| 17 | seller_state                     |       0        |
+| 18 | shipping_limit_date              |       0        |
+| 19 | price                            |       0        |
+| 20 | total_price                      |       0        |
+| 21 | freight_value                    |       0        |
+| 22 | total_freight_value              |       0        |
++----+----------------------------------+----------------+
 ```
+`transformed_order_items table` has some missing values. These missing values occur due to `transformed_products table` and `transformed_sellers table`.
+
+### 5. Grouping by Order ID Column in the Order Payment Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
+Below is an the example showing the first 3 rows of the transformed_order_items tables in the database and the missing value count in each column:
