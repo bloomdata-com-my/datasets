@@ -6,14 +6,15 @@ The original datasets can be found on [Kaggle](https://www.kaggle.com/datasets/o
 
 ### Steps for Preparing Outputs
 
-The following steps were taken to prepare the outputs. To optimize performance with our columnar-based database, we flattened the tables and introduced additional features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
+The following steps were taken to prepare the outputs. To optimize performance with our columnar-based database, we flattened the tables and introduced new transformed features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
 
-### 1. Reading All CSV Files, Filling Missing Values, and Storing in Database
+#### Step 1: Reading All CSV Files, Filling Missing Values, and Storing in Database
 
 Below are examples showing the first 3 rows of each table in the database and the missing value count in each column:
 
-#### customers table
+* customers table:
 ```
+customers table:
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -21,6 +22,8 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 1 | 18955e83d337fd6b2def6b18a428ac77 | 290c77bc529b7ac935b93aa66c333dc3 | 9790                     | sao bernardo do campo | SP             |
 | 2 | 4e7b3e00288586ebd08712fdd0374a03 | 060e732b5b29e8181a18229c7b0b2b5e | 1151                     | sao paulo             | SP             |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
+
+counting the missing value in each column:
 +---+--------------------------+----------------+
 |   | Column                   | Missing Values |
 +---+--------------------------+----------------+
@@ -30,8 +33,9 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 3 | customer_city            |       0        |
 | 4 | customer_state           |       0        |
 +---+--------------------------+----------------+
-```
+
 The `customers table` has zero missing value.
+```
 
 #### geolocation table
 ```
