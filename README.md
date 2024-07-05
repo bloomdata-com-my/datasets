@@ -113,9 +113,9 @@ Below are examples showing the first 3 rows of each table in the database:
 ```
 
 ### 2. Replacing the Original Product Category Names in Portuguese with Their Translated English Names Using the Products and Product_Category_Name_Translation Tables
-Below is an example showing the first 3 rows of the transformed products table in the database:
+Below is an example showing the first 3 rows of the transformed_products table in the database:
 
-`transformed_products` or `transformed_products.parquet`
+`transformed_products table` or `transformed_products.parquet`
 ```
 +---+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | translated_product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
@@ -124,4 +124,29 @@ Below is an example showing the first 3 rows of the transformed products table i
 | 1 | 3aa071139cb16b67ca9e5dea641aaa2f | art                              | 44.0                | 276.0                      | 1.0                | 1000.0           | 30.0              | 18.0              | 20.0             |
 | 2 | 96bd76ec8810374ed1b65e291975717f | sports_leisure                   | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
 +---+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+```
+
+### 3. Adding Aggregated Latitude and Longitude Columns (Mean) to the Customers and Sellers Tables Using the Geolocation Table
+Below are the examples showing the first 3 rows of the transformed_customers and transformed_sellers tables in the database:
+
+`transformed_customers table` or `transformed_customers.parquet`
+```
++---+----------------------------------+----------------------------------+--------------------------+---------------------+---------------------+-----------------------+----------------+
+|   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_lat        | customer_lng        | customer_city         | customer_state |
++---+----------------------------------+----------------------------------+--------------------------+---------------------+---------------------+-----------------------+----------------+
+| 0 | 06b8999e2fba1a1fbc88172c00ba8bc7 | 861eff4711a542e4b93843c6dd7febb0 | 14409                    | -20.498488755380297 | -47.396929485900976 | franca                | SP             |
+| 1 | 18955e83d337fd6b2def6b18a428ac77 | 290c77bc529b7ac935b93aa66c333dc3 | 9790                     | -23.72799221530055  | -46.54284778999086  | sao bernardo do campo | SP             |
+| 2 | 4e7b3e00288586ebd08712fdd0374a03 | 060e732b5b29e8181a18229c7b0b2b5e | 1151                     | -23.531641584683715 | -46.656288753249086 | sao paulo             | SP             |
++---+----------------------------------+----------------------------------+--------------------------+---------------------+---------------------+-----------------------+----------------+
+```
+
+`transformed_sellers table` or `transformed_sellers.parquet`
+```
++---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
+|   | seller_id                        | seller_zip_code_prefix | seller_lat          | seller_lng          | seller_city    | seller_state |
++---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
+| 0 | 3442f8959a84dea7ee197c632cb2df15 | 13023                  | -22.89384803253408  | -47.06133702244195  | campinas       | SP           |
+| 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | -22.38343651404282  | -46.947926542619655 | mogi guacu     | SP           |
+| 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | -22.909572437655488 | -43.177703112986904 | rio de janeiro | RJ           |
++---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
 ```
