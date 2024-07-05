@@ -6,8 +6,10 @@ We also saved all the outputs in Parquet files, which are compressed using the Z
 
 The original datasets can be found on [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
 
+
 ### Steps for Preparing Outputs
 The following steps were taken to prepare the outputs. Access to the codes can be requested by contacting cr.ooi@bloomdata.com.my.
+
 
 ### 1. Reading All CSV Files, Filling Missing Values, and Storing in Database
 
@@ -112,6 +114,7 @@ Below are examples showing the first 3 rows of each table in the database:
 +---+----------------------------------+------------------------+----------------+--------------+
 ```
 
+
 ### 2. Replacing the Original Product Category Names in Portuguese with Their Translated English Names Using the Products and Product_Category_Name_Translation Tables
 Below is an example showing the first 3 rows of the transformed_products table in the database:
 
@@ -125,6 +128,7 @@ Below is an example showing the first 3 rows of the transformed_products table i
 | 2 | 96bd76ec8810374ed1b65e291975717f | sports_leisure                   | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
 +---+----------------------------------+----------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 ```
+
 
 ### 3. Adding Aggregated Latitude and Longitude Columns (Mean) to the Customers and Sellers Tables Using the Geolocation Table
 Below are the examples showing the first 3 rows of the transformed_customers and transformed_sellers tables in the database:
@@ -150,6 +154,7 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 | 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | -22.909572437655488 | -43.177703112986904 | rio de janeiro | RJ           |
 +---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
 ```
+
 
 ### 4. Grouping by Order ID Column in the Order Items Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
 Below is an the example showing the first 3 rows of the transformed_order_items tables in the database:
