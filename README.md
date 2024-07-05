@@ -239,9 +239,9 @@ Below is an example showing the first 3 rows of the transformed_products table i
 `transformed_products table` has the same missing values as the `products table`.
 
 ### 3. Adding Aggregated Latitude and Longitude Columns (Mean) to the Customers and Sellers Tables Using the Geolocation Table
-Below are the examples showing the first 3 rows of the transformed_customers and transformed_sellers tables in the database:
+Below are the examples showing the first 3 rows of the transformed_customers and transformed_sellers tables in the database and the missing value count in each column:
 
-`transformed_customers table` or `transformed_customers.parquet`
+#### transformed_customers table
 ```
 +---+----------------------------------+----------------------------------+--------------------------+---------------------+---------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_lat        | customer_lng        | customer_city         | customer_state |
@@ -250,21 +250,21 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 | 1 | 18955e83d337fd6b2def6b18a428ac77 | 290c77bc529b7ac935b93aa66c333dc3 | 9790                     | -23.72799221530055  | -46.54284778999086  | sao bernardo do campo | SP             |
 | 2 | 4e7b3e00288586ebd08712fdd0374a03 | 060e732b5b29e8181a18229c7b0b2b5e | 1151                     | -23.531641584683715 | -46.656288753249086 | sao paulo             | SP             |
 +---+----------------------------------+----------------------------------+--------------------------+---------------------+---------------------+-----------------------+----------------+
++---+--------------------------+----------------+
+|   | Column                   | Missing Values |
++---+--------------------------+----------------+
+| 0 | customer_id              |       0        |
+| 1 | customer_unique_id       |       0        |
+| 2 | customer_zip_code_prefix |       0        |
+| 3 | customer_lat             |      278       |
+| 4 | customer_lng             |      278       |
+| 5 | customer_city            |       0        |
+| 6 | customer_state           |       0        |
++---+--------------------------+----------------+
 ```
+`transformed_customers table` has some missing values. These missing values occur because certain customer_zip_code_prefix entries in the `customers table` were not found in the `geolocation table`.
 
-278 missing values were noticed after joining the `customers table` and `geolocation table` since these `customer_zip_code_prefix` were not found in the `geolocation table`.
-```
-Missing values in each column:
-customer_id                   0
-customer_unique_id            0
-customer_zip_code_prefix      0
-customer_lat                278
-customer_lng                278
-customer_city                 0
-customer_state                0
-```
-
-`transformed_sellers table` or `transformed_sellers.parquet`
+#### transformed_sellers table
 ```
 +---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
 |   | seller_id                        | seller_zip_code_prefix | seller_lat          | seller_lng          | seller_city    | seller_state |
@@ -273,18 +273,18 @@ customer_state                0
 | 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | -22.38343651404282  | -46.947926542619655 | mogi guacu     | SP           |
 | 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | -22.909572437655488 | -43.177703112986904 | rio de janeiro | RJ           |
 +---+----------------------------------+------------------------+---------------------+---------------------+----------------+--------------+
++---+------------------------+----------------+
+|   | Column                 | Missing Values |
++---+------------------------+----------------+
+| 0 | seller_id              |       0        |
+| 1 | seller_zip_code_prefix |       0        |
+| 2 | seller_lat             |       7        |
+| 3 | seller_lng             |       7        |
+| 4 | seller_city            |       0        |
+| 5 | seller_state           |       0        |
++---+------------------------+----------------+
 ```
-
-7 missing values were noticed after joining the `sellers table` and `geolocation table` since these `seller_zip_code_prefix` were not found in the `geolocation table`.
-```
-Missing values in each column:
-seller_id                 0
-seller_zip_code_prefix    0
-seller_lat                7
-seller_lng                7
-seller_city               0
-seller_state              0
-```
+`transformed_sellers table` has some missing values. These missing values occur because certain seller_zip_code_prefix entries in the `sellers table` were not found in the `geolocation table`.
 
 ### 4. Grouping by Order ID Column in the Order Items Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
 Below is an the example showing the first 3 rows of the transformed_order_items tables in the database:
