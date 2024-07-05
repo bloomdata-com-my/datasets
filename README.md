@@ -2,10 +2,21 @@
 
 This repository contains a collection of retail and e-commerce datasets for data analysis, machine learning, and large language model projects. It is designed to facilitate collaboration with multiple parties. The datasets include customer information, geolocation data, order details, product information, and seller information. These datasets are sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). To optimize performance with our columnar-based database, we flattened the tables and introduced new transformed features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
 
-#### Step 1: Reading All CSV Files from Kaggle, Filling Missing Values, and Storing in Database
+#### Step 1: Reading all csv files from kaggle, filling missing values, and storing in columnar-based database
 
 #### customers table:
 ```
+customers csv has zero missing value across all the columns.
++---+--------------------------+----------------+
+|   | Column                   | Missing Values |
++---+--------------------------+----------------+
+| 0 | customer_id              | 0              |
+| 1 | customer_unique_id       | 0              |
+| 2 | customer_zip_code_prefix | 0              |
+| 3 | customer_city            | 0              |
+| 4 | customer_state           | 0              |
++---+--------------------------+----------------+
+
 showing the first 3 rows of customers table:
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
@@ -14,21 +25,21 @@ showing the first 3 rows of customers table:
 | 1 | 18955e83d337fd6b2def6b18a428ac77 | 290c77bc529b7ac935b93aa66c333dc3 | 9790                     | sao bernardo do campo | SP             |
 | 2 | 4e7b3e00288586ebd08712fdd0374a03 | 060e732b5b29e8181a18229c7b0b2b5e | 1151                     | sao paulo             | SP             |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
-
-customers table has zero missing value across all the columns.
-+---+--------------------------+----------------+
-|   | Column                   | Missing Values |
-+---+--------------------------+----------------+
-| 0 | customer_id              |       0        |
-| 1 | customer_unique_id       |       0        |
-| 2 | customer_zip_code_prefix |       0        |
-| 3 | customer_city            |       0        |
-| 4 | customer_state           |       0        |
-+---+--------------------------+----------------+
 ```
 
 #### geolocation table:
 ```
+geolocation csv has zero missing value across all the columns.
++---+-----------------------------+----------------+
+|   | Column                      | Missing Values |
++---+-----------------------------+----------------+
+| 0 | geolocation_zip_code_prefix | 0              |
+| 1 | geolocation_lat             | 0              |
+| 2 | geolocation_lng             | 0              |
+| 3 | geolocation_city            | 0              |
+| 4 | geolocation_state           | 0              |
++---+-----------------------------+----------------+
+
 showing the first 3 rows of geolocation table:
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat    | geolocation_lng    | geolocation_city | geolocation_state |
@@ -37,21 +48,23 @@ showing the first 3 rows of geolocation table:
 | 1 | 1046                        | -23.54608112703553 | -46.64482029837157 | sao paulo        | SP                |
 | 2 | 1046                        | -23.54612896641469 | -46.64295148361138 | sao paulo        | SP                |
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
-
-geolocation table has zero missing value across all the columns.
-+---+-----------------------------+----------------+
-|   | Column                      | Missing Values |
-+---+-----------------------------+----------------+
-| 0 | geolocation_zip_code_prefix |       0        |
-| 1 | geolocation_lat             |       0        |
-| 2 | geolocation_lng             |       0        |
-| 3 | geolocation_city            |       0        |
-| 4 | geolocation_state           |       0        |
-+---+-----------------------------+----------------+
 ```
 
 #### order_items table:
 ```
+order_items csv has zero missing value across all the columns.
++---+---------------------+----------------+
+|   | Column              | Missing Values |
++---+---------------------+----------------+
+| 0 | order_id            | 0              |
+| 1 | order_item_id       | 0              |
+| 2 | product_id          | 0              |
+| 3 | seller_id           | 0              |
+| 4 | shipping_limit_date | 0              |
+| 5 | price               | 0              |
+| 6 | freight_value       | 0              |
++---+---------------------+----------------+
+
 showing the first 3 rows of order_items table:
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
 |   | order_id                         | order_item_id | product_id                       | seller_id                        | shipping_limit_date | price | freight_value |
@@ -60,23 +73,22 @@ showing the first 3 rows of order_items table:
 | 1 | 00018f77f2f0320c557190d7a144bdd3 | 1             | e5f2d52b802189ee658865ca93d83a8f | dd7ddc04e1b6c2c614352b383efe2d36 | 2017-05-03 11:05:13 | 239.9 | 19.93         |
 | 2 | 000229ec398224ef6ca0657da4fc703e | 1             | c777355d18b72b67abbeef9df44fd0fd | 5b51032eddd242adc84c38acab88f23d | 2018-01-18 14:48:30 | 199.0 | 17.87         |
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
-
-order_items table has zero missing value across all the columns.
-+---+---------------------+----------------+
-|   | Column              | Missing Values |
-+---+---------------------+----------------+
-| 0 | order_id            |       0        |
-| 1 | order_item_id       |       0        |
-| 2 | product_id          |       0        |
-| 3 | seller_id           |       0        |
-| 4 | shipping_limit_date |       0        |
-| 5 | price               |       0        |
-| 6 | freight_value       |       0        |
-+---+---------------------+----------------+
 ```
 
-#### order_payments table
+#### order_payments table:
 ```
+order_payments csv has zero missing value across all the columns.
++---+----------------------+----------------+
+|   | Column               | Missing Values |
++---+----------------------+----------------+
+| 0 | order_id             | 0              |
+| 1 | payment_sequential   | 0              |
+| 2 | payment_type         | 0              |
+| 3 | payment_installments | 0              |
+| 4 | payment_value        | 0              |
++---+----------------------+----------------+
+
+showing the first 3 rows of order_payments table:
 +---+----------------------------------+--------------------+--------------+----------------------+---------------+
 |   | order_id                         | payment_sequential | payment_type | payment_installments | payment_value |
 +---+----------------------------------+--------------------+--------------+----------------------+---------------+
@@ -84,43 +96,50 @@ order_items table has zero missing value across all the columns.
 | 1 | a9810da82917af2d9aefd1278f1dcfa0 | 1                  | credit_card  | 1                    | 24.39         |
 | 2 | 25e8ea4e93396b6fa0d3dd708e76c1bd | 1                  | credit_card  | 1                    | 65.71         |
 +---+----------------------------------+--------------------+--------------+----------------------+---------------+
-+---+----------------------+----------------+
-|   | Column               | Missing Values |
-+---+----------------------+----------------+
-| 0 | order_id             |       0        |
-| 1 | payment_sequential   |       0        |
-| 2 | payment_type         |       0        |
-| 3 | payment_installments |       0        |
-| 4 | payment_value        |       0        |
-+---+----------------------+----------------+
 ```
-The `order_payments table` has zero missing value.
 
-#### order_reviews.parquet
+#### order_reviews table:
 ```
-+---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
-|   | review_id                        | order_id                         | review_score | review_comment_title | review_comment_message | review_creation_date | review_answer_timestamp |
-+---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
-| 0 | 7bc2406110b926393aa56f80a40eba40 | 73fc7af87114b39712e6da79b0a377eb | 4            | NaN                  | NaN                    | 2018-01-18 00:00:00  | 2018-01-18 21:46:59     |
-| 1 | 80e641a11e56f04c1ad469d5645fdfde | a548910a1c6147796b98fdf73dbeba33 | 5            | NaN                  | NaN                    | 2018-03-10 00:00:00  | 2018-03-11 03:05:13     |
-| 2 | 228ce5500dc1d8e020d8d1322874b6f0 | f9e4b658b201a9f2ecdecbb34bed034b | 5            | NaN                  | NaN                    | 2018-02-17 00:00:00  | 2018-02-18 14:36:24     |
-+---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
+order_reviews csv has some missing values. This may be due to not all reviews were filled in the application. These missing values have been filled with 'nan' before storing into the database.
 +---+-------------------------+----------------+
 |   | Column                  | Missing Values |
 +---+-------------------------+----------------+
-| 0 | review_id               |       0        |
-| 1 | order_id                |       0        |
-| 2 | review_score            |       0        |
-| 3 | review_comment_title    |       0        |
-| 4 | review_comment_message  |       0        |
-| 5 | review_creation_date    |       0        |
-| 6 | review_answer_timestamp |       0        |
+| 0 | review_id               | 0              |
+| 1 | order_id                | 0              |
+| 2 | review_score            | 0              |
+| 3 | review_comment_title    | 87656          |
+| 4 | review_comment_message  | 58247          |
+| 5 | review_creation_date    | 0              |
+| 6 | review_answer_timestamp | 0              |
 +---+-------------------------+----------------+
-```
-The `order_reviews table` has zero missing value.
 
-#### orders table
+showing the first 3 rows of order_reviews table:
++---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
+|   | review_id                        | order_id                         | review_score | review_comment_title | review_comment_message | review_creation_date | review_answer_timestamp |
++---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
+| 0 | 7bc2406110b926393aa56f80a40eba40 | 73fc7af87114b39712e6da79b0a377eb | 4            | nan                  | nan                    | 2018-01-18 00:00:00  | 2018-01-18 21:46:59     |
+| 1 | 80e641a11e56f04c1ad469d5645fdfde | a548910a1c6147796b98fdf73dbeba33 | 5            | nan                  | nan                    | 2018-03-10 00:00:00  | 2018-03-11 03:05:13     |
+| 2 | 228ce5500dc1d8e020d8d1322874b6f0 | f9e4b658b201a9f2ecdecbb34bed034b | 5            | nan                  | nan                    | 2018-02-17 00:00:00  | 2018-02-18 14:36:24     |
++---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
 ```
+
+#### orders table:
+```
+orders csv has some missing values. This may be due to certain orders being in different stages of the order status or not being updated. These missing values have been filled with 'nan' before storing into the database.
++---+-------------------------------+----------------+
+|   | Column                        | Missing Values |
++---+-------------------------------+----------------+
+| 0 | order_id                      | 0              |
+| 1 | customer_id                   | 0              |
+| 2 | order_status                  | 0              |
+| 3 | order_purchase_timestamp      | 0              |
+| 4 | order_approved_at             | 160            |
+| 5 | order_delivered_carrier_date  | 1783           |
+| 6 | order_delivered_customer_date | 2965           |
+| 7 | order_estimated_delivery_date | 0              |
++---+-------------------------------+----------------+
+
+showing the first 3 rows of orders table:
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
 |   | order_id                         | customer_id                      | order_status | order_purchase_timestamp | order_approved_at   | order_delivered_carrier_date | order_delivered_customer_date | order_estimated_delivery_date |
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
@@ -128,23 +147,26 @@ The `order_reviews table` has zero missing value.
 | 1 | 53cdb2fc8bc7dce0b6741e2150273451 | b0830fb4747a6c6d20dea0b8c802d7ef | delivered    | 2018-07-24 20:41:37      | 2018-07-26 03:24:27 | 2018-07-26 14:31:00          | 2018-08-07 15:27:45           | 2018-08-13 00:00:00           |
 | 2 | 47770eb9100c2d0c44946d9cf07ec65d | 41ce2a54c0b03bf3443c3d931a367089 | delivered    | 2018-08-08 08:38:49      | 2018-08-08 08:55:23 | 2018-08-08 13:50:00          | 2018-08-17 18:06:29           | 2018-09-04 00:00:00           |
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
-+---+-------------------------------+----------------+
-|   | Column                        | Missing Values |
-+---+-------------------------------+----------------+
-| 0 | order_id                      |       0        |
-| 1 | customer_id                   |       0        |
-| 2 | order_status                  |       0        |
-| 3 | order_purchase_timestamp      |       0        |
-| 4 | order_approved_at             |       0        |
-| 5 | order_delivered_carrier_date  |       0        |
-| 6 | order_delivered_customer_date |       0        |
-| 7 | order_estimated_delivery_date |       0        |
-+---+-------------------------------+----------------+
 ```
-The `orders table` has zero missing value.
 
-#### products table
+#### products table:
 ```
+products csv has some missing values. This may be due to not all products have complete details in the application. These missing values have been filled with 'nan' before storing into the database.
++---+----------------------------+----------------+
+|   | Column                     | Missing Values |
++---+----------------------------+----------------+
+| 0 | product_id                 | 0              |
+| 1 | product_category_name      | 610            |
+| 2 | product_name_lenght        | 610            |
+| 3 | product_description_lenght | 610            |
+| 4 | product_photos_qty         | 610            |
+| 5 | product_weight_g           | 2              |
+| 6 | product_length_cm          | 2              |
+| 7 | product_height_cm          | 2              |
+| 8 | product_width_cm           | 2              |
++---+----------------------------+----------------+
+
+showing the first 3 rows of products table:
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
@@ -152,24 +174,19 @@ The `orders table` has zero missing value.
 | 1 | 3aa071139cb16b67ca9e5dea641aaa2f | artes                 | 44.0                | 276.0                      | 1.0                | 1000.0           | 30.0              | 18.0              | 20.0             |
 | 2 | 96bd76ec8810374ed1b65e291975717f | esporte_lazer         | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
-+---+----------------------------+----------------+
-|   | Column                     | Missing Values |
-+---+----------------------------+----------------+
-| 0 | product_id                 |       0        |
-| 1 | product_category_name      |       0        |
-| 2 | product_name_lenght        |      610       |
-| 3 | product_description_lenght |      610       |
-| 4 | product_photos_qty         |      610       |
-| 5 | product_weight_g           |       2        |
-| 6 | product_length_cm          |       2        |
-| 7 | product_height_cm          |       2        |
-| 8 | product_width_cm           |       2        |
-+---+----------------------------+----------------+
 ```
-The `products table` has some missing values because not all products have complete details. These missing values have been filled with 'nan'.
 
-#### product_category_name_translation table
+#### product_category_name_translation table:
 ```
+product_category_name_translation csv has zero missing value across all the columns.
++---+-------------------------------+----------------+
+|   | Column                        | Missing Values |
++---+-------------------------------+----------------+
+| 0 | product_category_name         | 0              |
+| 1 | product_category_name_english | 0              |
++---+-------------------------------+----------------+
+
+showing the first 3 rows of product_category_name_translation table:
 +---+------------------------+-------------------------------+
 |   | product_category_name  | product_category_name_english |
 +---+------------------------+-------------------------------+
@@ -177,17 +194,21 @@ The `products table` has some missing values because not all products have compl
 | 1 | informatica_acessorios | computers_accessories         |
 | 2 | automotivo             | auto                          |
 +---+------------------------+-------------------------------+
-+---+-------------------------------+----------------+
-|   | Column                        | Missing Values |
-+---+-------------------------------+----------------+
-| 0 | product_category_name         |       0        |
-| 1 | product_category_name_english |       0        |
-+---+-------------------------------+----------------+
 ```
-The `product_category_name_translation table` has zero missing value.
 
-#### sellers table
+#### sellers table:
 ```
+sellers csv has zero missing value across all the columns.
++---+------------------------+----------------+
+|   | Column                 | Missing Values |
++---+------------------------+----------------+
+| 0 | seller_id              | 0              |
+| 1 | seller_zip_code_prefix | 0              |
+| 2 | seller_city            | 0              |
+| 3 | seller_state           | 0              |
++---+------------------------+----------------+
+
+showing the first 3 rows of sellers table:
 +---+----------------------------------+------------------------+----------------+--------------+
 |   | seller_id                        | seller_zip_code_prefix | seller_city    | seller_state |
 +---+----------------------------------+------------------------+----------------+--------------+
@@ -195,16 +216,7 @@ The `product_category_name_translation table` has zero missing value.
 | 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | mogi guacu     | SP           |
 | 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | rio de janeiro | RJ           |
 +---+----------------------------------+------------------------+----------------+--------------+
-+---+------------------------+----------------+
-|   | Column                 | Missing Values |
-+---+------------------------+----------------+
-| 0 | seller_id              |       0        |
-| 1 | seller_zip_code_prefix |       0        |
-| 2 | seller_city            |       0        |
-| 3 | seller_state           |       0        |
-+---+------------------------+----------------+
 ```
-The `sellers table` has zero missing value.
 
 ### 2. Adding Translated English Names along with the Original Product Category Names Using the Products and Product_Category_Name_Translation Tables
 
