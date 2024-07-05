@@ -31,7 +31,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 4 | customer_state           |       0        |
 +---+--------------------------+----------------+
 ```
-`customers table` has zero missing value found.
+The `customers table` has zero missing value.
 
 #### geolocation table
 ```
@@ -52,7 +52,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 4 | geolocation_state           |       0        |
 +---+-----------------------------+----------------+
 ```
-`geolocation table` has zero missing value found.
+The `geolocation table` has zero missing value.
 
 #### order_items table
 ```
@@ -75,7 +75,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 6 | freight_value       |       0        |
 +---+---------------------+----------------+
 ```
-`order_items table` has zero missing value found.
+The `order_items table` has zero missing value.
 
 #### order_payments table
 ```
@@ -96,7 +96,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 4 | payment_value        |       0        |
 +---+----------------------+----------------+
 ```
-`order_payments table` has zero missing value found.
+The `order_payments table` has zero missing value.
 
 #### order_reviews.parquet
 ```
@@ -119,7 +119,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 6 | review_answer_timestamp |       0        |
 +---+-------------------------+----------------+
 ```
-`order_reviews table` has zero missing value found.
+The `order_reviews table` has zero missing value.
 
 #### orders table
 ```
@@ -143,7 +143,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 7 | order_estimated_delivery_date |       0        |
 +---+-------------------------------+----------------+
 ```
-`orders table` has zero missing value found.
+The `orders table` has zero missing value.
 
 #### products table
 ```
@@ -168,7 +168,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 8 | product_width_cm           |       2        |
 +---+----------------------------+----------------+
 ```
-`products table` has some missing values found but these could be due to not all products having complete product details in the table.
+The `products table` has some missing values because not all products have complete details. These missing values have been filled with 'nan'.
 
 #### product_category_name_translation table
 ```
@@ -186,7 +186,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 1 | product_category_name_english |       0        |
 +---+-------------------------------+----------------+
 ```
-`product_category_name_translation table` has zero missing value found.
+The `product_category_name_translation table` has zero missing value.
 
 #### sellers table
 ```
@@ -206,7 +206,7 @@ Below are examples showing the first 3 rows of each table in the database and th
 | 3 | seller_state           |       0        |
 +---+------------------------+----------------+
 ```
-`sellers table` has zero missing value found.
+The `sellers table` has zero missing value.
 
 ### 2. Adding Translated English Names along with the Original Product Category Names Using the Products and Product_Category_Name_Translation Tables
 
@@ -236,9 +236,9 @@ Below is an example showing the first 3 rows of the transformed_products table i
 | 9 | product_width_cm                 |       2        |
 +---+----------------------------------+----------------+
 ```
-`transformed_products table` has the same missing values as the `products table`.
+The `transformed_products table` has the same missing values as the `products table`. These missing values have been filled with 'nan'.
 
-### 3. Adding Aggregated Latitude and Longitude Columns (Mean) to the Customers and Sellers Tables Using the Geolocation Table
+### 3. Adding Aggregated Latitude and Longitude Columns with Mean Calculation to the Customers and Sellers Tables Using the Geolocation Table
 Below are the examples showing the first 3 rows of the transformed_customers and transformed_sellers tables in the database and the missing value count in each column:
 
 #### transformed_customers table
@@ -262,7 +262,7 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 | 6 | customer_state           |       0        |
 +---+--------------------------+----------------+
 ```
-`transformed_customers table` has some missing values. These missing values occur because certain customer_zip_code_prefix entries in the `customers table` were not found in the `geolocation table`.
+The `transformed_customers table` has some missing values because certain `customer_zip_code_prefix` entries in the `customers table` were not found in the `geolocation table`. These missing values have been filled with 'nan'.
 
 #### transformed_sellers table
 ```
@@ -284,9 +284,9 @@ Below are the examples showing the first 3 rows of the transformed_customers and
 | 5 | seller_state           |       0        |
 +---+------------------------+----------------+
 ```
-`transformed_sellers table` has some missing values. These missing values occur because certain seller_zip_code_prefix entries in the `sellers table` were not found in the `geolocation table`.
+The `transformed_sellers table` has some missing values because certain `seller_zip_code_prefix` entries in the `sellers table` were not found in the `geolocation table`. These missing values have been filled with 'nan'.
 
-### 4. Grouping by Order ID Column in the Order Items Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
+### 4. Grouping by Order ID Column in the Order Items Table, Adding Additional Features to Flatten the Table, and Merging with Transformed Products and Transformed Sellers Tables
 Below is an the example showing the first 3 rows of the transformed_order_items tables in the database and the missing value count in each column:
 
 #### transformed_order_items table
@@ -326,7 +326,45 @@ Below is an the example showing the first 3 rows of the transformed_order_items 
 | 22 | total_freight_value              |       0        |
 +----+----------------------------------+----------------+
 ```
-`transformed_order_items table` has some missing values. These missing values occur due to `transformed_products table` and `transformed_sellers table`.
+The `transformed_order_items table` has some missing values due to incomplete data in the `transformed_products table` and `transformed_sellers table`. These missing values have been filled with 'nan'.
 
-### 5. Grouping by Order ID Column in the Order Payment Table, Adding Additional Features, and Merging with Transformed Products and Transformed Sellers Tables
+### 5. Grouping by Order ID Column in the Order Payment Table and Adding Additional Features to Flatten the Table
 Below is an the example showing the first 3 rows of the transformed_order_items tables in the database and the missing value count in each column:
+
+#### transformed_oder_payments table
+```
++---+----------------------------------+--------------+--------------------+---------------------+---------------+-------------------+-------------------------+--------------------------+--------------------+------------------+------------------------+-------------------------+-------------------+---------------+---------------------+----------------------+----------------+-------------------+-------------------------+--------------------------+--------------------+---------------------+
+|   | order_id                         | boleto_count | boleto_total_value | boleto_installments | boleto_values | credit_card_count | credit_card_total_value | credit_card_installments | credit_card_values | debit_card_count | debit_card_total_value | debit_card_installments | debit_card_values | voucher_count | voucher_total_value | voucher_installments | voucher_values | not_defined_count | not_defined_total_value | not_defined_installments | not_defined_values | total_payment_value |
++---+----------------------------------+--------------+--------------------+---------------------+---------------+-------------------+-------------------------+--------------------------+--------------------+------------------+------------------------+-------------------------+-------------------+---------------+---------------------+----------------------+----------------+-------------------+-------------------------+--------------------------+--------------------+---------------------+
+| 0 | 00010242fe8c5a6d1ba2dd792cb16214 | 0            | 0.0                |                     |               | 1                 | 72.19                   | 2                        | 72.19              | 0                | 0.0                    |                         |                   | 0             | 0.0                 |                      |                | 0                 | 0.0                     |                          |                    | 72.19               |
+| 1 | 00018f77f2f0320c557190d7a144bdd3 | 0            | 0.0                |                     |               | 1                 | 259.83                  | 3                        | 259.83             | 0                | 0.0                    |                         |                   | 0             | 0.0                 |                      |                | 0                 | 0.0                     |                          |                    | 259.83              |
+| 2 | 000229ec398224ef6ca0657da4fc703e | 0            | 0.0                |                     |               | 1                 | 216.87                  | 5                        | 216.87             | 0                | 0.0                    |                         |                   | 0             | 0.0                 |                      |                | 0                 | 0.0                     |                          |                    | 216.87              |
++---+----------------------------------+--------------+--------------------+---------------------+---------------+-------------------+-------------------------+--------------------------+--------------------+------------------+------------------------+-------------------------+-------------------+---------------+---------------------+----------------------+----------------+-------------------+-------------------------+--------------------------+--------------------+---------------------+
++----+--------------------------+----------------+
+|    | Column                   | Missing Values |
++----+--------------------------+----------------+
+| 0  | order_id                 |       0        |
+| 1  | boleto_count             |       0        |
+| 2  | boleto_total_value       |       0        |
+| 3  | boleto_installments      |     79656      |
+| 4  | boleto_values            |     79656      |
+| 5  | credit_card_count        |       0        |
+| 6  | credit_card_total_value  |       0        |
+| 7  | credit_card_installments |     22935      |
+| 8  | credit_card_values       |     22935      |
+| 9  | debit_card_count         |       0        |
+| 10 | debit_card_total_value   |       0        |
+| 11 | debit_card_installments  |     97912      |
+| 12 | debit_card_values        |     97912      |
+| 13 | voucher_count            |       0        |
+| 14 | voucher_total_value      |       0        |
+| 15 | voucher_installments     |     95574      |
+| 16 | voucher_values           |     95574      |
+| 17 | not_defined_count        |       0        |
+| 18 | not_defined_total_value  |       0        |
+| 19 | not_defined_installments |     99437      |
+| 20 | not_defined_values       |     99437      |
+| 21 | total_payment_value      |       0        |
++----+--------------------------+----------------+
+```
+The `transformed_order_payments table` has some missing values resulting from the flexible payment methods when we flattened the table. These missing values have been filled with 'nan'.
