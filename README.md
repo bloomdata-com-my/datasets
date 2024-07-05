@@ -17,7 +17,7 @@ customers csv has zero missing value across all the columns.
 | 4 | customer_state           | 0              |
 +---+--------------------------+----------------+
 
-showing the first 3 rows of customers table:
+showing the first 3 rows of customers table, complete table can be obtained at customers.parquet.
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -40,7 +40,7 @@ geolocation csv has zero missing value across all the columns.
 | 4 | geolocation_state           | 0              |
 +---+-----------------------------+----------------+
 
-showing the first 3 rows of geolocation table:
+showing the first 3 rows of geolocation table, complete table can be obtained at geolocation.parquet.
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat    | geolocation_lng    | geolocation_city | geolocation_state |
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
@@ -65,7 +65,7 @@ order_items csv has zero missing value across all the columns.
 | 6 | freight_value       | 0              |
 +---+---------------------+----------------+
 
-showing the first 3 rows of order_items table:
+showing the first 3 rows of order_items table, complete table can be obtained at order_items.parquet.
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
 |   | order_id                         | order_item_id | product_id                       | seller_id                        | shipping_limit_date | price | freight_value |
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
@@ -88,7 +88,7 @@ order_payments csv has zero missing value across all the columns.
 | 4 | payment_value        | 0              |
 +---+----------------------+----------------+
 
-showing the first 3 rows of order_payments table:
+showing the first 3 rows of order_payments table, complete table can be obtained at order_payments.parquet.
 +---+----------------------------------+--------------------+--------------+----------------------+---------------+
 |   | order_id                         | payment_sequential | payment_type | payment_installments | payment_value |
 +---+----------------------------------+--------------------+--------------+----------------------+---------------+
@@ -113,7 +113,7 @@ order_reviews csv has some missing values. This may be due to not all reviews we
 | 6 | review_answer_timestamp | 0              |
 +---+-------------------------+----------------+
 
-showing the first 3 rows of order_reviews table:
+showing the first 3 rows of order_reviews table, complete table can be obtained at order_reviews.parquet.
 +---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
 |   | review_id                        | order_id                         | review_score | review_comment_title | review_comment_message | review_creation_date | review_answer_timestamp |
 +---+----------------------------------+----------------------------------+--------------+----------------------+------------------------+----------------------+-------------------------+
@@ -139,7 +139,7 @@ orders csv has some missing values. This may be due to certain orders being in d
 | 7 | order_estimated_delivery_date | 0              |
 +---+-------------------------------+----------------+
 
-showing the first 3 rows of orders table:
+showing the first 3 rows of orders table, complete table can be obtained at orders.parquet.
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
 |   | order_id                         | customer_id                      | order_status | order_purchase_timestamp | order_approved_at   | order_delivered_carrier_date | order_delivered_customer_date | order_estimated_delivery_date |
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
@@ -166,7 +166,7 @@ products csv has some missing values. This may be due to not all products have c
 | 8 | product_width_cm           | 2              |
 +---+----------------------------+----------------+
 
-showing the first 3 rows of products table:
+showing the first 3 rows of products table, complete table can be obtained at products.parquet.
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
@@ -186,7 +186,7 @@ product_category_name_translation csv has zero missing value across all the colu
 | 1 | product_category_name_english | 0              |
 +---+-------------------------------+----------------+
 
-showing the first 3 rows of product_category_name_translation table:
+showing the first 3 rows of product_category_name_translation table, complete table can be obtained at product_category_name_translation.parquet.
 +---+------------------------+-------------------------------+
 |   | product_category_name  | product_category_name_english |
 +---+------------------------+-------------------------------+
@@ -208,7 +208,7 @@ sellers csv has zero missing value across all the columns.
 | 3 | seller_state           | 0              |
 +---+------------------------+----------------+
 
-showing the first 3 rows of sellers table:
+showing the first 3 rows of sellers table, complete table can be obtained at sellers.parquet.
 +---+----------------------------------+------------------------+----------------+--------------+
 |   | seller_id                        | seller_zip_code_prefix | seller_city    | seller_state |
 +---+----------------------------------+------------------------+----------------+--------------+
