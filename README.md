@@ -218,7 +218,7 @@ showing the first 3 rows of sellers table, complete table can be obtained at sel
 +---+----------------------------------+------------------------+----------------+--------------+
 ```
 
-### 2. Adding Translated English Names along with the Original Product Category Names Using the Products and Product_Category_Name_Translation Tables
+#### 2. Adding translated english names along with the original product category names using the products and product_category_name_translation tables
 
 Below is an example showing the first 3 rows of the transformed_products table in the database and the missing value count in each column:
 
