@@ -6,18 +6,20 @@ This repository contains a collection of retail and e-commerce datasets for data
 
 #### customers table:
 ```
-The 'customers.csv' file has no missing values but contains duplicate values in several columns. Since 'customer_id' is unique, no further data cleaning is needed.
-+---+--------------------------+----------------+------------------+
-|   | Column                   | Missing Values | Duplicate Values |
-+---+--------------------------+----------------+------------------+
-| 0 | customer_id              | 0              | 0                |
-| 1 | customer_unique_id       | 0              | 3345             |
-| 2 | customer_zip_code_prefix | 0              | 84447            |
-| 3 | customer_city            | 0              | 95322            |
-| 4 | customer_state           | 0              | 99414            |
-+---+--------------------------+----------------+------------------+
+The 'customers.csv' file has no missing values but contains duplicate values in several columns.
++---+--------------------------+-----------+----------------+------------------+
+|   | Column                   | Data Type | Missing Values | Duplicate Values |
++---+--------------------------+-----------+----------------+------------------+
+| 0 | customer_id              | object    | 0              | 0                |
+| 1 | customer_unique_id       | object    | 0              | 3345             |
+| 2 | customer_zip_code_prefix | int64     | 0              | 84447            |
+| 3 | customer_city            | object    | 0              | 95322            |
+| 4 | customer_state           | object    | 0              | 99414            |
++---+--------------------------+-----------+----------------+------------------+
 
-Showing the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
+No columns with non-standard English characters were found. Since 'customer_id' is unique, no further data cleaning is needed.
+
+Below are the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -29,24 +31,26 @@ Showing the first 3 rows of the 'customers' table after processing and storing i
 
 #### geolocation table:
 ```
-geolocation csv has zero missing value across all the columns.
-+---+-----------------------------+----------------+
-|   | Column                      | Missing Values |
-+---+-----------------------------+----------------+
-| 0 | geolocation_zip_code_prefix | 0              |
-| 1 | geolocation_lat             | 0              |
-| 2 | geolocation_lng             | 0              |
-| 3 | geolocation_city            | 0              |
-| 4 | geolocation_state           | 0              |
-+---+-----------------------------+----------------+
+The 'geolocation.csv' file has no missing values but contains duplicate values in all columns.
++---+-----------------------------+----------------+------------------+
+|   | Column                      | Missing Values | Duplicate Values |
++---+-----------------------------+----------------+------------------+
+| 0 | geolocation_zip_code_prefix | 0              | 981148           |
+| 1 | geolocation_lat             | 0              | 282803           |
+| 2 | geolocation_lng             | 0              | 282550           |
+| 3 | geolocation_city            | 0              | 992152           |
+| 4 | geolocation_state           | 0              | 1000136          |
++---+-----------------------------+----------------+------------------+
 
-showing the first 3 rows of geolocation table, complete table can be obtained at geolocation.parquet.
+Let's cleaning up the 'geolocation_zip_code_prefix', 'geolocation_lat', and 'geolocation_lng'.
+
+Showing the first 3 rows of the 'geolocation' table after processing and storing in the database. The complete table is available in 'geolocation.parquet'.
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat    | geolocation_lng    | geolocation_city | geolocation_state |
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 | 0 | 1037                        | -23.54562128115268 | -46.63929204800168 | sao paulo        | SP                |
 | 1 | 1046                        | -23.54608112703553 | -46.64482029837157 | sao paulo        | SP                |
-| 2 | 1046                        | -23.54612896641469 | -46.64295148361138 | sao paulo        | SP                |
+| 2 | 1076                        | -24.54612896641469 | -47.64295148361138 | sao paulo        | SP                |
 +---+-----------------------------+--------------------+--------------------+------------------+-------------------+
 ```
 
