@@ -1,8 +1,10 @@
 # Retail and E-Commerce Datasets
 
-This repository contains a collection of retail and e-commerce datasets for data analysis, machine learning, and large language model projects. It is designed to facilitate collaboration with multiple parties. The datasets include customer information, geolocation data, order details, product information, and seller information. These datasets are sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). To optimize performance with our columnar-based database, we flattened the tables and introduced new transformed features instead of using nested JSON structures. Access to the code can be requested by contacting cr.ooi@bloomdata.com.my. All outputs were saved in Parquet files, compressed using the ZSTD compression method.
+This repository offers a comprehensive collection of retail and e-commerce datasets, ideal for data analysis, machine learning, and large language model projects. These datasets, sourced from Kaggle, include detailed customer information, geolocation data, order details, product information, and seller information. Designed to facilitate collaboration across multiple parties, these datasets are saved in Parquet files and compressed using the ZSTD compression method. For access to the code, please contact cr.ooi@bloomdata.com.my.
 
-#### Step 1: Reading all csv files from kaggle, filling missing values, handling duplicated values, cleaning unnecessary data, and storing in columnar-based database
+### Step 1: Data Preparation
+#### Reading CSV Files, Handling Missing and Duplicate Values, Data Cleaning, and Storing in a Columnar-Based Database
+We begin by processing the simpler CSV files such as customers.csv, geolocation.csv, products.csv, product_category_name_translation.csv, and sellers.csv. Here are the outputs:
 
 #### customers table:
 ```
@@ -17,7 +19,8 @@ The 'customers.csv' file has no missing values but contains duplicate values in 
 | 4 | customer_state           | object    | 0              | 99414            |
 +---+--------------------------+-----------+----------------+------------------+
 
-No columns with non-standard English characters were found. Since 'customer_id' is unique, no further data cleaning is needed.
+No columns with non-standard English characters were found.
+Since 'customer_id' is unique, no further data cleaning is needed.
 
 Below are the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -32,42 +35,123 @@ Below are the first 3 rows of the 'customers' table after processing and storing
 #### geolocation table:
 ```
 The 'geolocation.csv' file has no missing values but contains duplicate values in all columns.
-+---+-----------------------------+----------------+------------------+
-|   | Column                      | Missing Values | Duplicate Values |
-+---+-----------------------------+----------------+------------------+
-| 0 | geolocation_zip_code_prefix | 0              | 981148           |
-| 1 | geolocation_lat             | 0              | 282803           |
-| 2 | geolocation_lng             | 0              | 282550           |
-| 3 | geolocation_city            | 0              | 992152           |
-| 4 | geolocation_state           | 0              | 1000136          |
-+---+-----------------------------+----------------+------------------+
++---+-----------------------------+-----------+----------------+------------------+
+|   | Column                      | Data Type | Missing Values | Duplicate Values |
++---+-----------------------------+-----------+----------------+------------------+
+| 0 | geolocation_zip_code_prefix | int64     | 0              | 981148           |
+| 1 | geolocation_lat             | float64   | 0              | 282803           |
+| 2 | geolocation_lng             | float64   | 0              | 282550           |
+| 3 | geolocation_city            | object    | 0              | 992152           |
+| 4 | geolocation_state           | object    | 0              | 1000136          |
++---+-----------------------------+-----------+----------------+------------------+
 
-Let's cleaning up the 'geolocation_zip_code_prefix', 'geolocation_lat', and 'geolocation_lng'.
+Columns with non-standard English characters: geolocation_city
+Performed normalization on the following columns: geolocation_city
+Performed group by operation on 'geolocation_zip_code_prefix', calculated the mean for 'geolocation_lat' and 'geolocation_lng', and renamed these columns to 'geolocation_lat_mean' and 'geolocation_lng_mean' respectively.
 
 Showing the first 3 rows of the 'geolocation' table after processing and storing in the database. The complete table is available in 'geolocation.parquet'.
-+---+-----------------------------+--------------------+--------------------+------------------+-------------------+
-|   | geolocation_zip_code_prefix | geolocation_lat    | geolocation_lng    | geolocation_city | geolocation_state |
-+---+-----------------------------+--------------------+--------------------+------------------+-------------------+
-| 0 | 1037                        | -23.54562128115268 | -46.63929204800168 | sao paulo        | SP                |
-| 1 | 1046                        | -23.54608112703553 | -46.64482029837157 | sao paulo        | SP                |
-| 2 | 1076                        | -24.54612896641469 | -47.64295148361138 | sao paulo        | SP                |
-+---+-----------------------------+--------------------+--------------------+------------------+-------------------+
++---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
+|   | geolocation_zip_code_prefix | geolocation_lat_mean | geolocation_lng_mean | normalized_geolocation_city | geolocation_state |
++---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
+| 0 | 1001                        | -23.550189776551765  | -46.6340235559042    | sao paulo                   | SP                |
+| 1 | 1002                        | -23.54814573176355   | -46.63497921074498   | sao paulo                   | SP                |
+| 2 | 1003                        | -23.54899372481316   | -46.635731309975874  | sao paulo                   | SP                |
++---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
+```
+
+#### products table:
+```
+The 'products.csv' file has some missing values and contains duplicate values in several columns. These missing values have been filled with 'nan' before storing into the database.
++---+----------------------------+-----------+----------------+------------------+
+|   | Column                     | Data Type | Missing Values | Duplicate Values |
++---+----------------------------+-----------+----------------+------------------+
+| 0 | product_id                 | object    | 0              | 0                |
+| 1 | product_category_name      | object    | 610            | 32877            |
+| 2 | product_name_lenght        | float64   | 610            | 32884            |
+| 3 | product_description_lenght | float64   | 610            | 29990            |
+| 4 | product_photos_qty         | float64   | 610            | 32931            |
+| 5 | product_weight_g           | float64   | 2              | 30746            |
+| 6 | product_length_cm          | float64   | 2              | 32851            |
+| 7 | product_height_cm          | float64   | 2              | 32848            |
+| 8 | product_width_cm           | float64   | 2              | 32855            |
++---+----------------------------+-----------+----------------+------------------+
+
+No columns with non-standard English characters found.
+Since 'product_id' is unique, no further data cleaning is needed.
+
+Showing the first 3 rows of the 'products' table after processing and storing in the database. The complete table is available in 'products.parquet'.
++---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+|   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
++---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+| 0 | 1e9e8ef04dbcff4541ed26657ea517e5 | perfumaria            | 40.0                | 287.0                      | 1.0                | 225.0            | 16.0              | 10.0              | 14.0             |
+| 1 | 3aa071139cb16b67ca9e5dea641aaa2f | artes                 | 44.0                | 276.0                      | 1.0                | 1000.0           | 30.0              | 18.0              | 20.0             |
+| 2 | 96bd76ec8810374ed1b65e291975717f | esporte_lazer         | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
++---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+```
+
+#### product_category_name_translation table:
+```
+The 'product_category_name_translation.csv' file has no missing values and duplicate values across all columns.
++---+-------------------------------+-----------+----------------+------------------+
+|   | Column                        | Data Type | Missing Values | Duplicate Values |
++---+-------------------------------+-----------+----------------+------------------+
+| 0 | product_category_name         | object    | 0              | 0                |
+| 1 | product_category_name_english | object    | 0              | 0                |
++---+-------------------------------+-----------+----------------+------------------+
+
+No columns with non-standard English characters found.
+
+Showing the first 3 rows of the 'product_category_name_translation' table after processing and storing in the database. The complete table is available in 'product_category_name_translation.parquet'.
++---+------------------------+-------------------------------+
+|   | product_category_name  | product_category_name_english |
++---+------------------------+-------------------------------+
+| 0 | beleza_saude           | health_beauty                 |
+| 1 | informatica_acessorios | computers_accessories         |
+| 2 | automotivo             | auto                          |
++---+------------------------+-------------------------------+
+```
+
+#### sellers table:
+```
+The 'sellers.csv' file has no missing values but contains duplicate values in several columns.
++---+------------------------+-----------+----------------+------------------+
+|   | Column                 | Data Type | Missing Values | Duplicate Values |
++---+------------------------+-----------+----------------+------------------+
+| 0 | seller_id              | object    | 0              | 0                |
+| 1 | seller_zip_code_prefix | int64     | 0              | 849              |
+| 2 | seller_city            | object    | 0              | 2484             |
+| 3 | seller_state           | object    | 0              | 3072             |
++---+------------------------+-----------+----------------+------------------+
+
+Columns with non-standard English characters: seller_city
+Performed normalization on the following columns: seller_city
+
+Below are the first 3 rows of the 'sellers' table after processing and storing in the database. The complete table is available in 'sellers.parquet'.
++---+----------------------------------+------------------------+------------------------+--------------+
+|   | seller_id                        | seller_zip_code_prefix | normalized_seller_city | seller_state |
++---+----------------------------------+------------------------+------------------------+--------------+
+| 0 | 3442f8959a84dea7ee197c632cb2df15 | 13023                  | campinas               | SP           |
+| 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | mogi guacu             | SP           |
+| 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | rio de janeiro         | RJ           |
++---+----------------------------------+------------------------+------------------------+--------------+
 ```
 
 #### order_items table:
 ```
 order_items csv has zero missing value across all the columns.
-+---+---------------------+----------------+
-|   | Column              | Missing Values |
-+---+---------------------+----------------+
-| 0 | order_id            | 0              |
-| 1 | order_item_id       | 0              |
-| 2 | product_id          | 0              |
-| 3 | seller_id           | 0              |
-| 4 | shipping_limit_date | 0              |
-| 5 | price               | 0              |
-| 6 | freight_value       | 0              |
-+---+---------------------+----------------+
++---+---------------------+-----------+----------------+------------------+
+|   | Column              | Data Type | Missing Values | Duplicate Values |
++---+---------------------+-----------+----------------+------------------+
+| 0 | order_id            | object    | 0              | 13984            |
+| 1 | order_item_id       | int64     | 0              | 112629           |
+| 2 | product_id          | object    | 0              | 79699            |
+| 3 | seller_id           | object    | 0              | 109555           |
+| 4 | shipping_limit_date | object    | 0              | 19332            |
+| 5 | price               | float64   | 0              | 106682           |
+| 6 | freight_value       | float64   | 0              | 105651           |
++---+---------------------+-----------+----------------+------------------+
+
+No columns with non-standard English characters found.
 
 showing the first 3 rows of order_items table, complete table can be obtained at order_items.parquet.
 +---+----------------------------------+---------------+----------------------------------+----------------------------------+---------------------+-------+---------------+
@@ -152,73 +236,3 @@ showing the first 3 rows of orders table, complete table can be obtained at orde
 | 2 | 47770eb9100c2d0c44946d9cf07ec65d | 41ce2a54c0b03bf3443c3d931a367089 | delivered    | 2018-08-08 08:38:49      | 2018-08-08 08:55:23 | 2018-08-08 13:50:00          | 2018-08-17 18:06:29           | 2018-09-04 00:00:00           |
 +---+----------------------------------+----------------------------------+--------------+--------------------------+---------------------+------------------------------+-------------------------------+-------------------------------+
 ```
-
-#### products table:
-```
-products csv has some missing values. This may be due to not all products have complete details in the application. These missing values have been filled with 'nan' before storing into the database.
-+---+----------------------------+----------------+
-|   | Column                     | Missing Values |
-+---+----------------------------+----------------+
-| 0 | product_id                 | 0              |
-| 1 | product_category_name      | 610            |
-| 2 | product_name_lenght        | 610            |
-| 3 | product_description_lenght | 610            |
-| 4 | product_photos_qty         | 610            |
-| 5 | product_weight_g           | 2              |
-| 6 | product_length_cm          | 2              |
-| 7 | product_height_cm          | 2              |
-| 8 | product_width_cm           | 2              |
-+---+----------------------------+----------------+
-
-showing the first 3 rows of products table, complete table can be obtained at products.parquet.
-+---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
-|   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
-+---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
-| 0 | 1e9e8ef04dbcff4541ed26657ea517e5 | perfumaria            | 40.0                | 287.0                      | 1.0                | 225.0            | 16.0              | 10.0              | 14.0             |
-| 1 | 3aa071139cb16b67ca9e5dea641aaa2f | artes                 | 44.0                | 276.0                      | 1.0                | 1000.0           | 30.0              | 18.0              | 20.0             |
-| 2 | 96bd76ec8810374ed1b65e291975717f | esporte_lazer         | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
-+---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
-```
-
-#### product_category_name_translation table:
-```
-product_category_name_translation csv has zero missing value across all the columns.
-+---+-------------------------------+----------------+
-|   | Column                        | Missing Values |
-+---+-------------------------------+----------------+
-| 0 | product_category_name         | 0              |
-| 1 | product_category_name_english | 0              |
-+---+-------------------------------+----------------+
-
-showing the first 3 rows of product_category_name_translation table, complete table can be obtained at product_category_name_translation.parquet.
-+---+------------------------+-------------------------------+
-|   | product_category_name  | product_category_name_english |
-+---+------------------------+-------------------------------+
-| 0 | beleza_saude           | health_beauty                 |
-| 1 | informatica_acessorios | computers_accessories         |
-| 2 | automotivo             | auto                          |
-+---+------------------------+-------------------------------+
-```
-
-#### sellers table:
-```
-sellers csv has zero missing value across all the columns.
-+---+------------------------+----------------+
-|   | Column                 | Missing Values |
-+---+------------------------+----------------+
-| 0 | seller_id              | 0              |
-| 1 | seller_zip_code_prefix | 0              |
-| 2 | seller_city            | 0              |
-| 3 | seller_state           | 0              |
-+---+------------------------+----------------+
-
-showing the first 3 rows of sellers table, complete table can be obtained at sellers.parquet.
-+---+----------------------------------+------------------------+----------------+--------------+
-|   | seller_id                        | seller_zip_code_prefix | seller_city    | seller_state |
-+---+----------------------------------+------------------------+----------------+--------------+
-| 0 | 3442f8959a84dea7ee197c632cb2df15 | 13023                  | campinas       | SP           |
-| 1 | d1b65fc7debc3361ea86b5f14c68d2e2 | 13844                  | mogi guacu     | SP           |
-| 2 | ce3ad9de960102d0677a81f5d0bb7b2d | 20031                  | rio de janeiro | RJ           |
-+---+----------------------------------+------------------------+----------------+--------------+
-```
-
