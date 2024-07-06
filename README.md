@@ -20,7 +20,7 @@ The 'customers.csv' file has no missing values but contains duplicate values in 
 +---+--------------------------+-----------+----------------+------------------+
 
 No columns with non-standard English characters were found.
-Since 'customer_id' is unique, no further data cleaning is needed.
+Since 'customer_id' column is unique, no further data cleaning is needed.
 
 Below are the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -49,7 +49,7 @@ Columns with non-standard English characters: geolocation_city
 Performed normalization on the following columns: geolocation_city
 Performed group by operation on 'geolocation_zip_code_prefix', calculated the mean for 'geolocation_lat' and 'geolocation_lng', and renamed these columns to 'geolocation_lat_mean' and 'geolocation_lng_mean' respectively.
 
-Showing the first 3 rows of the 'geolocation' table after processing and storing in the database. The complete table is available in 'geolocation.parquet'.
+Below are the first 3 rows of the 'geolocation' table after processing and storing in the database. The complete table is available in 'geolocation.parquet'.
 +---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat_mean | geolocation_lng_mean | normalized_geolocation_city | geolocation_state |
 +---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
@@ -77,9 +77,9 @@ The 'products.csv' file has some missing values and contains duplicate values in
 +---+----------------------------+-----------+----------------+------------------+
 
 No columns with non-standard English characters found.
-Since 'product_id' is unique, no further data cleaning is needed.
+Since 'product_id' column is unique, no further data cleaning is needed.
 
-Showing the first 3 rows of the 'products' table after processing and storing in the database. The complete table is available in 'products.parquet'.
+Below are the first 3 rows of the 'products' table after processing and storing in the database. The complete table is available in 'products.parquet'.
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
@@ -100,9 +100,9 @@ The 'product_category_name_translation.csv' file has no missing values and dupli
 +---+-------------------------------+-----------+----------------+------------------+
 
 No columns with non-standard English characters found.
-Since 'product_category_name' and 'product_category_name_english' are unique, no further data cleaning is needed.
+Since 'product_category_name' and 'product_category_name_english' columns are unique, no further data cleaning is needed.
 
-Showing the first 3 rows of the 'product_category_name_translation' table after processing and storing in the database. The complete table is available in 'product_category_name_translation.parquet'.
+Below are the first 3 rows of the 'product_category_name_translation' table after processing and storing in the database. The complete table is available in 'product_category_name_translation.parquet'.
 +---+------------------------+-------------------------------+
 |   | product_category_name  | product_category_name_english |
 +---+------------------------+-------------------------------+
@@ -126,7 +126,7 @@ The 'sellers.csv' file has no missing values but contains duplicate values in se
 
 Columns with non-standard English characters: seller_city
 Performed normalization on the following columns: seller_city
-Since 'seller_id' is unique, no further data cleaning is needed.
+Since 'seller_id' column is unique, no further data cleaning is needed.
 
 Below are the first 3 rows of the 'sellers' table after processing and storing in the database. The complete table is available in 'sellers.parquet'.
 +---+----------------------------------+------------------------+------------------------+--------------+
