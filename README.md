@@ -6,18 +6,18 @@ This repository contains a collection of retail and e-commerce datasets for data
 
 #### customers table:
 ```
-customers csv has zero missing value across all the columns.
-+---+--------------------------+----------------+
-|   | Column                   | Missing Values |
-+---+--------------------------+----------------+
-| 0 | customer_id              | 0              |
-| 1 | customer_unique_id       | 0              |
-| 2 | customer_zip_code_prefix | 0              |
-| 3 | customer_city            | 0              |
-| 4 | customer_state           | 0              |
-+---+--------------------------+----------------+
+The 'customers.csv' file has no missing values but contains duplicate values in several columns. Since 'customer_id' is unique, no further data cleaning is needed.
++---+--------------------------+----------------+------------------+
+|   | Column                   | Missing Values | Duplicate Values |
++---+--------------------------+----------------+------------------+
+| 0 | customer_id              | 0              | 0                |
+| 1 | customer_unique_id       | 0              | 3345             |
+| 2 | customer_zip_code_prefix | 0              | 84447            |
+| 3 | customer_city            | 0              | 95322            |
+| 4 | customer_state           | 0              | 99414            |
++---+--------------------------+----------------+------------------+
 
-showing the first 3 rows of customers table, complete table can be obtained at customers.parquet.
+Showing the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
