@@ -100,6 +100,7 @@ The 'product_category_name_translation.csv' file has no missing values and dupli
 +---+-------------------------------+-----------+----------------+------------------+
 
 No columns with non-standard English characters found.
+Since 'product_category_name' and 'product_category_name_english' are unique, no further data cleaning is needed.
 
 Showing the first 3 rows of the 'product_category_name_translation' table after processing and storing in the database. The complete table is available in 'product_category_name_translation.parquet'.
 +---+------------------------+-------------------------------+
@@ -125,6 +126,7 @@ The 'sellers.csv' file has no missing values but contains duplicate values in se
 
 Columns with non-standard English characters: seller_city
 Performed normalization on the following columns: seller_city
+Since 'seller_id' is unique, no further data cleaning is needed.
 
 Below are the first 3 rows of the 'sellers' table after processing and storing in the database. The complete table is available in 'sellers.parquet'.
 +---+----------------------------------+------------------------+------------------------+--------------+
