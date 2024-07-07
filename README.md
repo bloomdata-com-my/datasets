@@ -8,7 +8,7 @@ We begin by processing the simpler CSV files such as customers.csv, geolocation.
 
 #### customers table:
 ```
-The 'customers.csv' file has no missing values but contains duplicate values in several columns.
+- The 'customers.csv' file has no missing values but contains duplicate values in several columns.
 +---+--------------------------+-----------+----------------+------------------+
 |   | Column                   | Data Type | Missing Values | Duplicate Values |
 +---+--------------------------+-----------+----------------+------------------+
@@ -19,10 +19,17 @@ The 'customers.csv' file has no missing values but contains duplicate values in 
 | 4 | customer_state           | object    | 0              | 99414            |
 +---+--------------------------+-----------+----------------+------------------+
 
-No columns with non-standard English characters were found.
-Since 'customer_id' column is unique, no further data cleaning is needed.
+- No empty strings or null values found in column: 'customer_id'.
+- No empty strings or null values found in column: 'customer_unique_id'.
+- No empty strings or null values found in column: 'customer_city'.
+- No empty strings or null values found in column: 'customer_state'.
+- No columns with non-standard English characters found in column: 'customer_id'.
+- No columns with non-standard English characters found in column: 'customer_unique_id'.
+- No columns with non-standard English characters found in column: 'customer_city'.
+- No columns with non-standard English characters found in column: 'customer_state'.
+- Since 'customer_id' column is unique, no further data cleaning is needed.
 
-Below are the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
+- Below are the first 3 rows of the 'customers' table after processing and storing in the database. The complete table is available in 'customers.parquet'.
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
 |   | customer_id                      | customer_unique_id               | customer_zip_code_prefix | customer_city         | customer_state |
 +---+----------------------------------+----------------------------------+--------------------------+-----------------------+----------------+
@@ -34,7 +41,7 @@ Below are the first 3 rows of the 'customers' table after processing and storing
 
 #### geolocation table:
 ```
-The 'geolocation.csv' file has no missing values but contains duplicate values in all columns.
+- The 'geolocation.csv' file has no missing values but contains duplicate values in all columns.
 +---+-----------------------------+-----------+----------------+------------------+
 |   | Column                      | Data Type | Missing Values | Duplicate Values |
 +---+-----------------------------+-----------+----------------+------------------+
@@ -45,11 +52,15 @@ The 'geolocation.csv' file has no missing values but contains duplicate values i
 | 4 | geolocation_state           | object    | 0              | 1000136          |
 +---+-----------------------------+-----------+----------------+------------------+
 
-Columns with non-standard English characters: geolocation_city
-Performed normalization on the following columns: geolocation_city
-Performed group by operation on 'geolocation_zip_code_prefix', calculated the mean for 'geolocation_lat' and 'geolocation_lng', and renamed these columns to 'geolocation_lat_mean' and 'geolocation_lng_mean' respectively.
+- No empty strings or null values found in column: 'geolocation_city'.
+- No empty strings or null values found in column: 'geolocation_state'.
+- Non-standard English characters found in column: 'geolocation_city'.
+- Performed normalization on the following column: 'geolocation_city'.
+- No columns with non-standard English characters found in column: 'geolocation_state'.
+- Since 'geolocation_zip_code_prefix' is considered the key in this table and duplicate values are found across several columns that will be used for joining tables in later stages, data cleaning is needed.
+- Performed group by operation on 'geolocation_zip_code_prefix', calculated the mean for 'geolocation_lat' and 'geolocation_lng', and renamed these columns to 'geolocation_lat_mean' and 'geolocation_lng_mean' respectively.
 
-Below are the first 3 rows of the 'geolocation' table after processing and storing in the database. The complete table is available in 'geolocation.parquet'.
+- Below are the first 3 rows of the 'geolocation' table after processing and storing in the database. The complete table is available in 'geolocation.parquet'.
 +---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
 |   | geolocation_zip_code_prefix | geolocation_lat_mean | geolocation_lng_mean | normalized_geolocation_city | geolocation_state |
 +---+-----------------------------+----------------------+----------------------+-----------------------------+-------------------+
@@ -61,7 +72,7 @@ Below are the first 3 rows of the 'geolocation' table after processing and stori
 
 #### products table:
 ```
-The 'products.csv' file has some missing values and contains duplicate values in several columns. These missing values have been filled with 'nan' before storing into the database.
+- The 'products.csv' file has some missing values and contains duplicate values in several columns. These missing values have been filled with 'nan' before storing into the database.
 +---+----------------------------+-----------+----------------+------------------+
 |   | Column                     | Data Type | Missing Values | Duplicate Values |
 +---+----------------------------+-----------+----------------+------------------+
@@ -76,10 +87,14 @@ The 'products.csv' file has some missing values and contains duplicate values in
 | 8 | product_width_cm           | float64   | 2              | 32855            |
 +---+----------------------------+-----------+----------------+------------------+
 
-No columns with non-standard English characters found.
-Since 'product_id' column is unique, no further data cleaning is needed.
+- No empty strings or null values found in column: 'product_id'.
+- Empty strings or null values found in column: 'product_category_name'.
+- Performed NaN replacement on the following column: 'product_category_name'.
+- No columns with non-standard English characters found in column: 'product_id'.
+- No columns with non-standard English characters found in column: 'product_category_name'.
+- Since 'product_id' column is unique, no further data cleaning is needed.
 
-Below are the first 3 rows of the 'products' table after processing and storing in the database. The complete table is available in 'products.parquet'.
+- Below are the first 3 rows of the 'products' table after processing and storing in the database. The complete table is available in 'products.parquet'.
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | product_category_name | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
 +---+----------------------------------+-----------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
@@ -91,7 +106,7 @@ Below are the first 3 rows of the 'products' table after processing and storing 
 
 #### product_category_name_translation table:
 ```
-The 'product_category_name_translation.csv' file has no missing values and duplicate values across all columns.
+- The 'product_category_name_translation.csv' file has no missing values and duplicate values across all columns.
 +---+-------------------------------+-----------+----------------+------------------+
 |   | Column                        | Data Type | Missing Values | Duplicate Values |
 +---+-------------------------------+-----------+----------------+------------------+
@@ -99,10 +114,13 @@ The 'product_category_name_translation.csv' file has no missing values and dupli
 | 1 | product_category_name_english | object    | 0              | 0                |
 +---+-------------------------------+-----------+----------------+------------------+
 
-No columns with non-standard English characters found.
-Since 'product_category_name' and 'product_category_name_english' columns are unique, no further data cleaning is needed.
+- No empty strings or null values found in column: 'product_category_name'.
+- No empty strings or null values found in column: 'product_category_name_english'.
+- No columns with non-standard English characters found in column: 'product_category_name'.
+- No columns with non-standard English characters found in column: 'product_category_name_english'.
+- Since 'product_category_name' and 'product_category_name_english' columns are unique, no further data cleaning is needed.
 
-Below are the first 3 rows of the 'product_category_name_translation' table after processing and storing in the database. The complete table is available in 'product_category_name_translation.parquet'.
+- Below are the first 3 rows of the 'product_category_name_translation' table after processing and storing in the database. The complete table is available in 'product_category_name_translation.parquet'.
 +---+------------------------+-------------------------------+
 |   | product_category_name  | product_category_name_english |
 +---+------------------------+-------------------------------+
@@ -114,7 +132,7 @@ Below are the first 3 rows of the 'product_category_name_translation' table afte
 
 #### sellers table:
 ```
-The 'sellers.csv' file has no missing values but contains duplicate values in several columns.
+- The 'sellers.csv' file has no missing values but contains duplicate values in several columns.
 +---+------------------------+-----------+----------------+------------------+
 |   | Column                 | Data Type | Missing Values | Duplicate Values |
 +---+------------------------+-----------+----------------+------------------+
@@ -124,11 +142,16 @@ The 'sellers.csv' file has no missing values but contains duplicate values in se
 | 3 | seller_state           | object    | 0              | 3072             |
 +---+------------------------+-----------+----------------+------------------+
 
-Columns with non-standard English characters: seller_city
-Performed normalization on the following columns: seller_city
-Since 'seller_id' column is unique, no further data cleaning is needed.
+- No empty strings or null values found in column: 'seller_id'.
+- No empty strings or null values found in column: 'seller_city'.
+- No empty strings or null values found in column: 'seller_state'.
+- No columns with non-standard English characters found in column: 'seller_id'.
+- Non-standard English characters found in column: 'seller_city'.
+- Performed normalization on the following column: 'seller_city'.
+- No columns with non-standard English characters found in column: 'seller_state'.
+- Since 'seller_id' column is unique, no further data cleaning is needed.
 
-Below are the first 3 rows of the 'sellers' table after processing and storing in the database. The complete table is available in 'sellers.parquet'.
+- Below are the first 3 rows of the 'sellers' table after processing and storing in the database. The complete table is available in 'sellers.parquet'.
 +---+----------------------------------+------------------------+------------------------+--------------+
 |   | seller_id                        | seller_zip_code_prefix | normalized_seller_city | seller_state |
 +---+----------------------------------+------------------------+------------------------+--------------+
