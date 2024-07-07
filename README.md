@@ -1,6 +1,6 @@
 # Retail and E-Commerce Datasets
 
-This repository offers a comprehensive collection of retail and e-commerce datasets, ideal for data analysis, machine learning, and large language model projects. These datasets, sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), include detailed customer information, geolocation data, order details, product information, and seller information. To facilitate collaboration across multiple parties, we transformed these datasets, saved them in Parquet files, and compressed them using the ZSTD compression method. For access to the code, please contact cr.ooi@bloomdata.com.my.
+This repository offers a comprehensive collection of retail and e-commerce datasets, ideal for large language model projects. These datasets, sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), include detailed customer information, geolocation data, order details, product information, and seller information. To facilitate collaboration across multiple parties, we transformed these datasets, saved them in Parquet files, and compressed them using the ZSTD compression method. For access to the code, please contact cr.ooi@bloomdata.com.my.
 
 ### Step 1: Data Preparation
 #### Reading CSV Files, Handling Missing and Duplicate Values, Data Cleaning, and Storing in a Columnar-Based Database
