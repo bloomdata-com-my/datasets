@@ -4,7 +4,7 @@ This repository offers a comprehensive collection of retail and e-commerce datas
 
 ## Step 1: ETL Process (Extract, Transform, Load)
 
-> Extracting data from CSV files, handling missing and duplicate values, transforming data, and storing it in a columnar-based database.
+> Extracting data from CSV files, cleaning data, transforming data, and storing it in a columnar-based database.
 
 ### ETL process for Large Language Model projects
 
