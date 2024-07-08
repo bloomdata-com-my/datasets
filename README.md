@@ -14,8 +14,8 @@ Workflow and output of ETL process for product_category_name_translation.csv.
 </summary>
 
 - Checking data type consistency, missing values, and duplicate values before processing.
-  > - The `product_category_name_translation.csv` file has no missing values and duplicate values across all the columns.
-  > - Even though there is no missing value found, there is a need to check further for data integrity.
+  > - The `product_category_name_translation.csv` file has no missing values and duplicate values across all columns.
+  > - Even though no missing values were found, there is a need to check further for data integrity.
   > - Below is the summary of data types, missing, and duplicate values before processing.
     
   ```sql
@@ -43,8 +43,8 @@ Workflow and output of ETL process for product_category_name_translation.csv.
 
 - Since all the columns are unique and they will be merged with `products` DataFrame later, no further data transformation is needed.
 
-- Below are the first 3 rows of the `product_category_name_translation` table after processing and storing in the database.
-  > - The complete table is available in `product_category_name_translation.parquet`.
+- Below are the first 3 rows of the `llm_product_category_name_translation` table after processing and storing in the database.
+  > - The complete table is available in `llm_product_category_name_translation.parquet`.
 
   ```sql
   +---+------------------------+-------------------------------+
@@ -83,7 +83,7 @@ Workflow and output of ETL process for products.csv.
   +---+----------------------------+-----------+----------------+------------------+
   ```
 
-- Merge `products` table with `product_category_name_translation` table to update product category names from Portugues to English.
+- Merge `products` DataFrame with `llm_product_category_name_translation` table to update product category names from Portugues to English.
 
 - Checking data type consistency, missing values, and duplicate values after joining.
   > - The merged DataFrame shows an increase in missing and duplicate values, particularly in the `product_category_name_english` column.
@@ -293,8 +293,8 @@ Workflow and output of ETL process for products.csv.
   +---+-------------------------------+-----------+----------------+------------------+
   ```
 
-- Below are the first 3 rows of the `products` table after processing and storing in the database.
-  > - The complete table is available in `products.parquet`.
+- Below are the first 3 rows of the `llm_products` table after processing and storing in the database.
+  > - The complete table is available in `llm_products.parquet`.
 
   ```sql
   +---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
@@ -306,4 +306,76 @@ Workflow and output of ETL process for products.csv.
   +---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
   ```
   
+</details>
+
+<details>
+<summary>
+Workflow and output of ETL process for products.csv.
+</summary>
+
+- Checking data type consistency, missing values, and duplicate values before processing.
+  > - The `geolocation.csv` file has no missing values but contains duplicate values across all columns.
+  > - Below is the summary of data types, missing, and duplicate values before processing.
+
+  ```sql
+  +---+-----------------------------+-----------+----------------+------------------+
+  |   | Column                      | Data Type | Missing Values | Duplicate Values |
+  +---+-----------------------------+-----------+----------------+------------------+
+  | 0 | geolocation_zip_code_prefix | int64     | 0              | 981148           |
+  | 1 | geolocation_lat             | float64   | 0              | 282803           |
+  | 2 | geolocation_lng             | float64   | 0              | 282550           |
+  | 3 | geolocation_city            | object    | 0              | 992152           |
+  | 4 | geolocation_state           | object    | 0              | 1000136          |
+  +---+-----------------------------+-----------+----------------+------------------+
+  ```
+
+- Checking and converting columns to object data type to enable replacement of empty strings, null values, and 'nan' values with 'Unknown'.
+  > - Converted column: `geolocation_zip_code_prefix` from int64 to object data type.
+  > - Converted column: `geolocation_lat from float64` to object data type.
+  > - Converted column: `geolocation_lng from float64` to object data type.
+  > - Column: `geolocation_city` already in object data type.
+  > - Column: `geolocation_state` already in object data type.
+
+- Checking data type consistency, missing values, and duplicate values after converting data types.
+  > - The DataFrame shows that the missing and duplicate values remain unchanged.
+  > - There is a need to check further for data integrity.
+  > - Below is the summary of data types, missing, and duplicate values after converting data types.
+
+  ```sql
+  +---+-----------------------------+-----------+----------------+------------------+
+  |   | Column                      | Data Type | Missing Values | Duplicate Values |
+  +---+-----------------------------+-----------+----------------+------------------+
+  | 0 | geolocation_zip_code_prefix | object    | 0              | 981148           |
+  | 1 | geolocation_lat             | object    | 0              | 282803           |
+  | 2 | geolocation_lng             | object    | 0              | 282550           |
+  | 3 | geolocation_city            | object    | 0              | 992152           |
+  | 4 | geolocation_state           | object    | 0              | 1000136          |
+  +---+-----------------------------+-----------+----------------+------------------+
+  ```
+
+- Checking and replacing empty strings, null values, and 'nan' values in each object column with 'Unknown'.
+  > - No empty strings, null values, or 'nan' values found in column: `geolocation_zip_code_prefix`.
+  > - No empty strings, null values, or 'nan' values found in column: `geolocation_lat`.
+  > - No empty strings, null values, or 'nan' values found in column: `geolocation_lng`.
+  > - No empty strings, null values, or 'nan' values found in column: `geolocation_city`.
+  > - No empty strings, null values, or 'nan' values found in column: `geolocation_state`.
+
+- Checking and refining column: 'geolocation_zip_code_prefix' for text with diacritics and special characters.
+  > - No text with diacritics and special characters found in column: `geolocation_zip_code_prefix`.
+
+- Checking and refining column: 'geolocation_lat' for text with diacritics and special characters.
+  > - No text with diacritics and special characters found in column: `geolocation_lat`.
+
+- Checking and refining column: 'geolocation_lng' for text with diacritics and special characters.
+  > - No text with diacritics and special characters found in column: `geolocation_lng`.
+
+- Checking and refining column: 'geolocation_city' for text with diacritics and special characters.
+  > - Below are the first 3 unique texts with diacritics and special characters found in column: `geolocation_city`.
+  > - Performing refinement with text-to-text generation model.
+  > - The refined column has been renamed to `refined_geolocation_city`.
+
+  ```python
+  6 - Original: são paulo, Normalized: sao paulo, Refined: Sao Paulo
+  ```
+
 </details>
