@@ -13,13 +13,13 @@ This repository offers a comprehensive collection of retail and e-commerce datas
 Workflow and output of ETL process for product_category_name_translation.csv.
 </summary>
 
+---
+
 Checking data type consistency, missing values, and duplicate values before processing.
 
 > The `product_category_name_translation.csv` file has no missing values and duplicate values across all the columns.
-
-> Even though there is no missing value found, there is a need to check further for data integrity.
-
-> Below is the summary of data types, missing, and duplicate values before processing.
+  Even though there is no missing value found, there is a need to check further for data integrity.
+  Below is the summary of data types, missing, and duplicate values before processing.
   
 ```sql
 +---+-------------------------------+-----------+----------------+------------------+
@@ -30,11 +30,15 @@ Checking data type consistency, missing values, and duplicate values before proc
 +---+-------------------------------+-----------+----------------+------------------+
 ```
 
-- Checking and converting columns to object data type to enable replacement of empty strings, null values, and 'nan' values with 'Unknown'.
+---
 
-  > Column: `product_category_name` already in object data type.
+Checking and converting columns to object data type to enable replacement of empty strings, null values, and 'nan' values with 'Unknown'.
+
+```
+Column: `product_category_name` already in object data type.
   
-  > Column: `product_category_name_english` already in object data type.
+Column: `product_category_name_english` already in object data type.
+```
 
 - Checking and replacing empty strings, null values, and 'nan' values in each object column with 'Unknown'.
   
