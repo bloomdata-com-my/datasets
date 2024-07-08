@@ -374,8 +374,10 @@ Workflow and output of ETL process for products.csv.
   > - Performing refinement with text-to-text generation model.
   > - The refined column has been renamed to `refined_geolocation_city`.
 
-  ```python
+  ```console
   6 - Original: são paulo, Normalized: sao paulo, Refined: Sao Paulo
+  51000 - Original: jundiaí, Normalized: jundiai, Refined: jundiai
+  71909 - Original: taboão da serra, Normalized: taboao da serra, Refined: taboao da serra
   ```
 
 </details>
