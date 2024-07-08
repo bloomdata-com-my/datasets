@@ -13,13 +13,13 @@ This repository offers a comprehensive collection of retail and e-commerce datas
 Workflow and output of ETL process for product_category_name_translation.csv.
 </summary>
 
-- Checking data type consistency, missing values, and duplicate values before processing.
+Checking data type consistency, missing values, and duplicate values before processing.
 
-  > The `product_category_name_translation.csv` file has no missing values and duplicate values across all the columns.
-  
-  > Even though there is no missing value found, there is a need to check further for data integrity.
-  
-  > Below is the summary of data types, missing, and duplicate values before processing.
+> The `product_category_name_translation.csv` file has no missing values and duplicate values across all the columns.
+
+> Even though there is no missing value found, there is a need to check further for data integrity.
+
+> Below is the summary of data types, missing, and duplicate values before processing.
   
 ```sql
 +---+-------------------------------+-----------+----------------+------------------+
@@ -220,21 +220,85 @@ Workflow and output of ETL process for products.csv.
 
 - Checking the validity of duplicate values
 
-  > First 3 duplicate entries in column: `product_category_name_english`: ['baby', 'musical_instruments', 'furniture_decor'].
+  > First 3 duplicate entries in column: `product_category_name_english`:
 
-  > First 3 duplicate entries in column: `product_name_lenght`: ['56.0', '59.0', '56.0'].
+```python
+[
+  'baby',
+  'musical_instruments',
+  'furniture_decor'
+]
+```
 
-  > First 3 duplicate entries in column: `product_description_lenght`: ['206.0', '509.0', '402.0'].
+  > First 3 duplicate entries in column: `product_name_lenght`:
 
-  > First 3 duplicate entries in column: `product_photos_qty`: ['1.0', '1.0', '1.0'].
+```python
+[
+  '56.0',
+  '59.0',
+  '56.0'
+]
+```
 
-  > First 3 duplicate entries in column: `product_weight_g`: ['600.0', '200.0', '400.0'].
+  > First 3 duplicate entries in column: `product_description_lenght`:
 
-  > First 3 duplicate entries in column: `product_length_cm`: ['16.0', '17.0', '17.0'].
+```python
+[
+  '206.0',
+  '509.0',
+  '402.0'
+]
+```
 
-  > First 3 duplicate entries in column: `product_height_cm`: ['10.0', '10.0', '7.0'].
+  > First 3 duplicate entries in column: `product_photos_qty`
 
-  > First 3 duplicate entries in column: `product_width_cm`: ['17.0', '13.0', '17.0'].
+```python
+[
+  '1.0',
+  '1.0',
+  '1.0'
+]
+```
+
+  > First 3 duplicate entries in column: `product_weight_g`
+
+```python
+[
+  '600.0',
+  '200.0',
+  '400.0'
+]
+```
+
+  > First 3 duplicate entries in column: `product_length_cm`
+
+```python
+[
+  '16.0',
+  '17.0',
+  '17.0'
+]
+```
+
+  > First 3 duplicate entries in column: `product_height_cm`
+
+```python
+[
+  '10.0',
+  '10.0',
+  '7.0'
+]
+```
+
+  > First 3 duplicate entries in column: `product_width_cm`
+
+```python
+[
+  '17.0',
+  '13.0',
+  '17.0'
+]
+```
 
 - Checking data type consistency, missing values, and duplicate values after data cleaning.
 
