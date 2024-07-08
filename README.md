@@ -242,7 +242,7 @@ Workflow and output of ETL process for products.csv.
   
   > The duplicate values are acceptable since they are valid in this case.
   
-  > Below is the summary of data types, missing, and duplicate values after data cleaning.
+  > Below is the summary of data types, missing, and duplicate values after data cleaning and transformation.
 
   ```
   +---+-------------------------------+-----------+----------------+------------------+
@@ -258,5 +258,19 @@ Workflow and output of ETL process for products.csv.
   | 7 | product_height_cm             | object    | 0              | 32848            |
   | 8 | product_width_cm              | object    | 0              | 32855            |
   +---+-------------------------------+-----------+----------------+------------------+
-  ```  
+  ```
+
+- Below are the first 3 rows of the `products` table after processing and storing in the database.
+
+- The complete table is available in `products.parquet`.
+
+```
++---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+|   | product_id                       | product_category_name_english | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
++---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+| 0 | 1e9e8ef04dbcff4541ed26657ea517e5 | perfumery                     | 40.0                | 287.0                      | 1.0                | 225.0            | 16.0              | 10.0              | 14.0             |
+| 1 | 3aa071139cb16b67ca9e5dea641aaa2f | art                           | 44.0                | 276.0                      | 1.0                | 1000.0           | 30.0              | 18.0              | 20.0             |
+| 2 | 96bd76ec8810374ed1b65e291975717f | sports_leisure                | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
++---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
+```
 </details>
