@@ -17,7 +17,7 @@ Workflow and output of ETL process for product_category_name_translation.csv.
 
   > The `product_category_name_translation.csv` file has no missing values and duplicate values across all the columns.
   
-  > Even though there are no missing values found, there is a need to check further for data integrity.
+  > Even though there is no missing value found, there is a need to check further for data integrity.
   
   > Below is the summary of data types, missing, and duplicate values before processing.
   
