@@ -21,14 +21,14 @@ Workflow and output of ETL process for product_category_name_translation.csv.
   
   > Below is the summary of data types, missing, and duplicate values before processing.
   
-  ```
-  +---+-------------------------------+-----------+----------------+------------------+
-  |   | Column                        | Data Type | Missing Values | Duplicate Values |
-  +---+-------------------------------+-----------+----------------+------------------+
-  | 0 | product_category_name         | object    | 0              | 0                |
-  | 1 | product_category_name_english | object    | 0              | 0                |
-  +---+-------------------------------+-----------+----------------+------------------+
-  ```
+```sql
++---+-------------------------------+-----------+----------------+------------------+
+|   | Column                        | Data Type | Missing Values | Duplicate Values |
++---+-------------------------------+-----------+----------------+------------------+
+| 0 | product_category_name         | object    | 0              | 0                |
+| 1 | product_category_name_english | object    | 0              | 0                |
++---+-------------------------------+-----------+----------------+------------------+
+```
 
 - Checking and converting columns to object data type to enable replacement of empty strings, null values, and 'nan' values with 'Unknown'.
 
@@ -56,7 +56,7 @@ Workflow and output of ETL process for product_category_name_translation.csv.
 
 - The complete table is available in `product_category_name_translation.parquet`.
 
-```
+```sql
 +---+------------------------+-------------------------------+
 |   | product_category_name  | product_category_name_english |
 +---+------------------------+-------------------------------+
@@ -78,21 +78,21 @@ Workflow and output of ETL process for products.csv.
   
   > Below is the summary of data types, missing, and duplicate values before processing.
 
-  ```
-  +---+----------------------------+-----------+----------------+------------------+
-  |   | Column                     | Data Type | Missing Values | Duplicate Values |
-  +---+----------------------------+-----------+----------------+------------------+
-  | 0 | product_id                 | object    | 0              | 0                |
-  | 1 | product_category_name      | object    | 610            | 32877            |
-  | 2 | product_name_lenght        | float64   | 610            | 32884            |
-  | 3 | product_description_lenght | float64   | 610            | 29990            |
-  | 4 | product_photos_qty         | float64   | 610            | 32931            |
-  | 5 | product_weight_g           | float64   | 2              | 30746            |
-  | 6 | product_length_cm          | float64   | 2              | 32851            |
-  | 7 | product_height_cm          | float64   | 2              | 32848            |
-  | 8 | product_width_cm           | float64   | 2              | 32855            |
-  +---+----------------------------+-----------+----------------+------------------+
-  ```
+```sql
++---+----------------------------+-----------+----------------+------------------+
+|   | Column                     | Data Type | Missing Values | Duplicate Values |
++---+----------------------------+-----------+----------------+------------------+
+| 0 | product_id                 | object    | 0              | 0                |
+| 1 | product_category_name      | object    | 610            | 32877            |
+| 2 | product_name_lenght        | float64   | 610            | 32884            |
+| 3 | product_description_lenght | float64   | 610            | 29990            |
+| 4 | product_photos_qty         | float64   | 610            | 32931            |
+| 5 | product_weight_g           | float64   | 2              | 30746            |
+| 6 | product_length_cm          | float64   | 2              | 32851            |
+| 7 | product_height_cm          | float64   | 2              | 32848            |
+| 8 | product_width_cm           | float64   | 2              | 32855            |
++---+----------------------------+-----------+----------------+------------------+
+```
 
 - Merge `products` table with `product_category_name_translation` table to update product category names from Portugues to English.
 
@@ -102,21 +102,21 @@ Workflow and output of ETL process for products.csv.
   
   > Below is the summary of data types, missing, and duplicate values after joining.
 
-  ```
-  +---+-------------------------------+-----------+----------------+------------------+
-  |   | Column                        | Data Type | Missing Values | Duplicate Values |
-  +---+-------------------------------+-----------+----------------+------------------+
-  | 0 | product_id                    | object    | 0              | 0                |
-  | 1 | product_category_name_english | object    | 623            | 32879            |
-  | 2 | product_name_lenght           | float64   | 610            | 32884            |
-  | 3 | product_description_lenght    | float64   | 610            | 29990            |
-  | 4 | product_photos_qty            | float64   | 610            | 32931            |
-  | 5 | product_weight_g              | float64   | 2              | 30746            |
-  | 6 | product_length_cm             | float64   | 2              | 32851            |
-  | 7 | product_height_cm             | float64   | 2              | 32848            |
-  | 8 | product_width_cm              | float64   | 2              | 32855            |
-  +---+-------------------------------+-----------+----------------+------------------+
-  ```
+```sql
++---+-------------------------------+-----------+----------------+------------------+
+|   | Column                        | Data Type | Missing Values | Duplicate Values |
++---+-------------------------------+-----------+----------------+------------------+
+| 0 | product_id                    | object    | 0              | 0                |
+| 1 | product_category_name_english | object    | 623            | 32879            |
+| 2 | product_name_lenght           | float64   | 610            | 32884            |
+| 3 | product_description_lenght    | float64   | 610            | 29990            |
+| 4 | product_photos_qty            | float64   | 610            | 32931            |
+| 5 | product_weight_g              | float64   | 2              | 30746            |
+| 6 | product_length_cm             | float64   | 2              | 32851            |
+| 7 | product_height_cm             | float64   | 2              | 32848            |
+| 8 | product_width_cm              | float64   | 2              | 32855            |
++---+-------------------------------+-----------+----------------+------------------+
+```
 
 - Checking and converting columns to object data type to enable replacement of empty strings, null values, and 'nan' values with 'Unknown'.
   
@@ -146,21 +146,21 @@ Workflow and output of ETL process for products.csv.
   
   > Below is the summary of data types, missing, and duplicate values after converting data types.
 
-  ```
-  +---+-------------------------------+-----------+----------------+------------------+
-  |   | Column                        | Data Type | Missing Values | Duplicate Values |
-  +---+-------------------------------+-----------+----------------+------------------+
-  | 0 | product_id                    | object    | 0              | 0                |
-  | 1 | product_category_name_english | object    | 623            | 32879            |
-  | 2 | product_name_lenght           | object    | 0              | 32884            |
-  | 3 | product_description_lenght    | object    | 0              | 29990            |
-  | 4 | product_photos_qty            | object    | 0              | 32931            |
-  | 5 | product_weight_g              | object    | 0              | 30746            |
-  | 6 | product_length_cm             | object    | 0              | 32851            |
-  | 7 | product_height_cm             | object    | 0              | 32848            |
-  | 8 | product_width_cm              | object    | 0              | 32855            |
-  +---+-------------------------------+-----------+----------------+------------------+
-  ```
+```sql
++---+-------------------------------+-----------+----------------+------------------+
+|   | Column                        | Data Type | Missing Values | Duplicate Values |
++---+-------------------------------+-----------+----------------+------------------+
+| 0 | product_id                    | object    | 0              | 0                |
+| 1 | product_category_name_english | object    | 623            | 32879            |
+| 2 | product_name_lenght           | object    | 0              | 32884            |
+| 3 | product_description_lenght    | object    | 0              | 29990            |
+| 4 | product_photos_qty            | object    | 0              | 32931            |
+| 5 | product_weight_g              | object    | 0              | 30746            |
+| 6 | product_length_cm             | object    | 0              | 32851            |
+| 7 | product_height_cm             | object    | 0              | 32848            |
+| 8 | product_width_cm              | object    | 0              | 32855            |
++---+-------------------------------+-----------+----------------+------------------+
+```
 
 - Checking and replacing empty strings, null values, and 'nan' values in each object column with 'Unknown'.
 
@@ -244,27 +244,27 @@ Workflow and output of ETL process for products.csv.
   
   > Below is the summary of data types, missing, and duplicate values after data cleaning and transformation.
 
-  ```
-  +---+-------------------------------+-----------+----------------+------------------+
-  |   | Column                        | Data Type | Missing Values | Duplicate Values |
-  +---+-------------------------------+-----------+----------------+------------------+
-  | 0 | product_id                    | object    | 0              | 0                |
-  | 1 | product_category_name_english | object    | 0              | 32879            |
-  | 2 | product_name_lenght           | object    | 0              | 32884            |
-  | 3 | product_description_lenght    | object    | 0              | 29990            |
-  | 4 | product_photos_qty            | object    | 0              | 32931            |
-  | 5 | product_weight_g              | object    | 0              | 30746            |
-  | 6 | product_length_cm             | object    | 0              | 32851            |
-  | 7 | product_height_cm             | object    | 0              | 32848            |
-  | 8 | product_width_cm              | object    | 0              | 32855            |
-  +---+-------------------------------+-----------+----------------+------------------+
-  ```
+```sql
++---+-------------------------------+-----------+----------------+------------------+
+|   | Column                        | Data Type | Missing Values | Duplicate Values |
++---+-------------------------------+-----------+----------------+------------------+
+| 0 | product_id                    | object    | 0              | 0                |
+| 1 | product_category_name_english | object    | 0              | 32879            |
+| 2 | product_name_lenght           | object    | 0              | 32884            |
+| 3 | product_description_lenght    | object    | 0              | 29990            |
+| 4 | product_photos_qty            | object    | 0              | 32931            |
+| 5 | product_weight_g              | object    | 0              | 30746            |
+| 6 | product_length_cm             | object    | 0              | 32851            |
+| 7 | product_height_cm             | object    | 0              | 32848            |
+| 8 | product_width_cm              | object    | 0              | 32855            |
++---+-------------------------------+-----------+----------------+------------------+
+```
 
 - Below are the first 3 rows of the `products` table after processing and storing in the database.
 
 - The complete table is available in `products.parquet`.
 
-```
+```sql
 +---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
 |   | product_id                       | product_category_name_english | product_name_lenght | product_description_lenght | product_photos_qty | product_weight_g | product_length_cm | product_height_cm | product_width_cm |
 +---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
