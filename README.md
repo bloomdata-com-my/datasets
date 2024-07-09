@@ -35,13 +35,11 @@ Workflow and output of ETL process for product_category_name_translation.csv.
   > - No empty strings, null values, or 'nan' values found in column: `product_category_name`.
   > - No empty strings, null values, or 'nan' values found in column: `product_category_name_english`.
 
-- Checking and refining column: `product_category_name` for text with diacritics and special characters.
-  >  - No text with diacritics and special characters found in column: `product_category_name`.
-
-- Checking and refining column: `product_category_name_english` for text with diacritics and special characters.
+- Checking and normalizing text with diacritics and special characters in each object column.
+  > - No text with diacritics and special characters found in column: `product_category_name`.
   > - No text with diacritics and special characters found in column: `product_category_name_english`.
 
-- Since all the columns are unique and they will be merged with `products` DataFrame later, no further data transformation is needed.
+- Since all columns are unique and clean, and they will be merged with the `products` DataFrame later, no additional data transformation is necessary.
 
 - Below are the first 3 rows of the `llm_product_category_name_translation` table after processing and storing in the database.
   > - The complete table is available in `llm_product_category_name_translation.parquet`.
@@ -55,7 +53,7 @@ Workflow and output of ETL process for product_category_name_translation.csv.
   | 2 | automotivo             | auto                          |
   +---+------------------------+-------------------------------+
   ```
-  
+<br>
 </details>
 
 <details>
@@ -148,36 +146,20 @@ Workflow and output of ETL process for products.csv.
   > - Empty strings, null values, or 'nan' values found in column: `product_height_cm`. Replaced with 'Unknown'.
   > - Empty strings, null values, or 'nan' values found in column: `product_width_cm`. Replaced with 'Unknown'.
 
-- Checking and refining column: `product_id` for text with diacritics and special characters.
+- Checking and normalizing text with diacritics and special characters in each object column.
   > - No text with diacritics and special characters found in column: `product_id`.
-
-- Checking and refining column: `product_category_name_english` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_category_name_english`.
-
-- Checking and refining column: `product_name_lenght` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_name_lenght`.
-
-- Checking and refining column: `product_description_lenght` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_description_lenght`.
-
-- Checking and refining column: `product_photos_qty` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_photos_qty`.
-
-- Checking and refining column: `product_weight_g` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_weight_g`.
-
-- Checking and refining column: `product_length_cm` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_length_cm`.
-
-- Checking and refining column: `product_height_cm` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_height_cm`.
-
-- Checking and refining column: `product_width_cm` for text with diacritics and special characters.
   > - No text with diacritics and special characters found in column: `product_width_cm`.
 
 - Checking the validity of duplicate values
   > - First 3 duplicate entries in column: `product_category_name_english`:
-
+  
   ```sql
   +---+-------------------------------+------------------+
   |   | product_category_name_english | duplicates_count |
@@ -272,10 +254,10 @@ Workflow and output of ETL process for products.csv.
   +---+------------------+------------------+
   ```
 
-- Checking data type consistency, missing values, and duplicate values after data cleaning and transformation..
+- Checking data type consistency, missing values, and duplicate values after data cleaning.
   > - The DataFrame now shows no missing values. Duplicate values remain the same.
-  > - The duplicate values are acceptable since they are valid in this case.
-  > - Below is the summary of data types, missing, and duplicate values after data cleaning and transformation.
+  > - The duplicate values are acceptable since `product_id` is unique in this case.
+  > - Below is the summary of data types, missing, and duplicate values after data cleaning.
 
   ```sql
   +---+-------------------------------+-----------+----------------+------------------+
@@ -305,16 +287,16 @@ Workflow and output of ETL process for products.csv.
   | 2 | 96bd76ec8810374ed1b65e291975717f | sports_leisure                | 46.0                | 250.0                      | 1.0                | 154.0            | 18.0              | 9.0               | 15.0             |
   +---+----------------------------------+-------------------------------+---------------------+----------------------------+--------------------+------------------+-------------------+-------------------+------------------+
   ```
-  
+<br>
 </details>
 
 <details>
 <summary>
-Workflow and output of ETL process for products.csv.
+Workflow and output of ETL process for geolocation.csv.
 </summary>
 
 - Checking data type consistency, missing values, and duplicate values before processing.
-  > - The `geolocation.csv` file has no missing values but contains duplicate values across all columns.
+  > - The `geolocation.csv` file has no missing values but contains duplicate values in all columns.
   > - Below is the summary of data types, missing, and duplicate values before processing.
 
   ```sql
@@ -329,55 +311,41 @@ Workflow and output of ETL process for products.csv.
   +---+-----------------------------+-----------+----------------+------------------+
   ```
 
-- Checking and converting columns to object data type to enable replacement of empty strings, null values, and 'nan' values with 'Unknown'.
-  > - Converted column: `geolocation_zip_code_prefix` from int64 to object data type.
-  > - Converted column: `geolocation_lat from float64` to object data type.
-  > - Converted column: `geolocation_lng from float64` to object data type.
-  > - Column: `geolocation_city` already in object data type.
-  > - Column: `geolocation_state` already in object data type.
+- Performed group by operation on `geolocation_zip_code_prefix`, `geolocation_city`, and `geolocation_state`, calculated the mean for `geolocation_lat` and `geolocation_lng`, and renamed these columns to `geolocation_lat_mean` and `geolocation_lng_mean` respectively.
+  > - The current group by operation with mean calculation highlights inconsistencies in the `geolocation_city` column due to uncleaned data. Variations like `sao paulo` and `são paulo` indicate a need for further cleaning.
+  > - Below is the first 10 rows of the grouped by DataFrame with mean calculation.
 
-- Checking data type consistency, missing values, and duplicate values after converting data types.
-  > - The DataFrame shows that the missing and duplicate values remain unchanged.
-  > - There is a need to check further for data integrity.
-  > - Below is the summary of data types, missing, and duplicate values after converting data types.
+  ```sql
+  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
+  |   | geolocation_zip_code_prefix | geolocation_lat_mean | geolocation_lng_mean | geolocation_city | geolocation_state |
+  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
+  | 0 | 1001                        | -23.550214793274414  | -46.634018776332134  | sao paulo        | SP                |
+  | 1 | 1001                        | -23.549997981678136  | -46.63406019929013   | são paulo        | SP                |
+  | 2 | 1002                        | -23.548437764688757  | -46.63512916227373   | sao paulo        | SP                |
+  | 3 | 1002                        | -23.54464133666111   | -46.63317979239999   | são paulo        | SP                |
+  | 4 | 1003                        | -23.548988128760268  | -46.63578551623726   | sao paulo        | SP                |
+  | 5 | 1003                        | -23.5490832616594    | -46.63486400979368   | são paulo        | SP                |
+  | 6 | 1004                        | -23.5498127407841    | -46.63477259976395   | sao paulo        | SP                |
+  | 7 | 1004                        | -23.54950697362805   | -46.634428168330544  | são paulo        | SP                |
+  | 8 | 1005                        | -23.549419344825484  | -46.63687812524338   | sao paulo        | SP                |
+  | 9 | 1005                        | -23.549880032391272  | -46.63506341016249   | são paulo        | SP                |
+  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
+  ```
+  
+- Checking data type consistency, missing values, and duplicate values after grouping by operation and mean calculation.
+  > - The grouped by DataFrame with mean calculation, however, shows reduced duplicate values.
+  > - Below is the summary of data types, missing, and duplicate values after grouping by operation and mean calculation.
 
   ```sql
   +---+-----------------------------+-----------+----------------+------------------+
   |   | Column                      | Data Type | Missing Values | Duplicate Values |
   +---+-----------------------------+-----------+----------------+------------------+
-  | 0 | geolocation_zip_code_prefix | object    | 0              | 981148           |
-  | 1 | geolocation_lat             | object    | 0              | 282803           |
-  | 2 | geolocation_lng             | object    | 0              | 282550           |
-  | 3 | geolocation_city            | object    | 0              | 992152           |
-  | 4 | geolocation_state           | object    | 0              | 1000136          |
+  | 0 | geolocation_zip_code_prefix | int64     | 0              | 8897             |
+  | 1 | geolocation_lat_mean        | float64   | 0              | 61               |
+  | 2 | geolocation_lng_mean        | float64   | 0              | 61               |
+  | 3 | geolocation_city            | object    | 0              | 19901            |
+  | 4 | geolocation_state           | object    | 0              | 27885            |
   +---+-----------------------------+-----------+----------------+------------------+
   ```
-
-- Checking and replacing empty strings, null values, and 'nan' values in each object column with 'Unknown'.
-  > - No empty strings, null values, or 'nan' values found in column: `geolocation_zip_code_prefix`.
-  > - No empty strings, null values, or 'nan' values found in column: `geolocation_lat`.
-  > - No empty strings, null values, or 'nan' values found in column: `geolocation_lng`.
-  > - No empty strings, null values, or 'nan' values found in column: `geolocation_city`.
-  > - No empty strings, null values, or 'nan' values found in column: `geolocation_state`.
-
-- Checking and refining column: 'geolocation_zip_code_prefix' for text with diacritics and special characters.
-  > - No text with diacritics and special characters found in column: `geolocation_zip_code_prefix`.
-
-- Checking and refining column: 'geolocation_lat' for text with diacritics and special characters.
-  > - No text with diacritics and special characters found in column: `geolocation_lat`.
-
-- Checking and refining column: 'geolocation_lng' for text with diacritics and special characters.
-  > - No text with diacritics and special characters found in column: `geolocation_lng`.
-
-- Checking and refining column: 'geolocation_city' for text with diacritics and special characters.
-  > - Below are the first 3 unique texts with diacritics and special characters found in column: `geolocation_city`.
-  > - Performing refinement with text-to-text generation model.
-  > - The refined column has been renamed to `refined_geolocation_city`.
-
-  ```console
-  6 - Original: são paulo, Normalized: sao paulo, Refined: Sao Paulo
-  51000 - Original: jundiaí, Normalized: jundiai, Refined: jundiai
-  71909 - Original: taboão da serra, Normalized: taboao da serra, Refined: taboao da serra
-  ```
-
+<br>
 </details>
