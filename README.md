@@ -1,6 +1,6 @@
 # Retail and E-Commerce Datasets
 
-This repository offers a comprehensive collection of retail and e-commerce datasets, sourced primarily from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). These datasets include detailed customer profiles, geolocation data, order specifics, product details, and seller information, making them ideal for showcasing contextual analysis where Large Language Models excel over conventional Machine Learning approaches. To facilitate collaborative efforts across multiple stakeholders in showcasing these capabilities, we have transformed and stored these datasets in Parquet format, utilizing the efficient ZSTD compression method. For access to the code, please reach out to cr.ooi@bloomdata.com.my.
+This repository provides a comprehensive collection of retail and e-commerce datasets, mainly sourced from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). These datasets include detailed customer profiles, geolocation data, order specifics, product details, and seller information, making them ideal for showcasing contextual analysis where Large Language Models excel over conventional Machine Learning approaches. To support collaboration, we have transformed and stored these datasets in Parquet format using the efficient ZSTD compression method. For access to the code, please reach out to cr.ooi@bloomdata.com.my.
 
 ## Step 1: ETL Process (Extract, Transform, Load)
 
@@ -15,7 +15,7 @@ Workflow and output of ETL process for product_category_name_translation.csv.
 
 - Checking data type consistency, missing values, and duplicate values before processing.
   > - The `product_category_name_translation.csv` file has no missing values and duplicate values across all columns.
-  > - Even though no missing values were found, there is a need to check further for data integrity.
+  > - No missing values were found, but further checks for data integrity are necessary.
   > - Below is the summary of data types, missing, and duplicate values before processing.
     
   ```sql
@@ -39,7 +39,7 @@ Workflow and output of ETL process for product_category_name_translation.csv.
   > - No text with diacritics and special characters found in column: `product_category_name`.
   > - No text with diacritics and special characters found in column: `product_category_name_english`.
 
-- Since all columns are unique and clean, and they will be merged with the `products` DataFrame later, no additional data transformation is necessary.
+- All columns are unique and clean. As they will be merged with the `products` DataFrame, no additional data transformation is needed.
 
 - Below are the first 3 rows of the `llm_product_category_name_translation` table after processing and storing in the database.
   > - The complete table is available in `llm_product_category_name_translation.parquet`.
@@ -312,30 +312,11 @@ Workflow and output of ETL process for geolocation.csv.
   ```
 
 - Performed group by operation on `geolocation_zip_code_prefix`, `geolocation_city`, and `geolocation_state`, calculated the mean for `geolocation_lat` and `geolocation_lng`, and renamed these columns to `geolocation_lat_mean` and `geolocation_lng_mean` respectively.
-  > - The current group by operation with mean calculation highlights inconsistencies in the `geolocation_city` column due to uncleaned data. Variations like `sao paulo` and `são paulo` indicate a need for further cleaning.
-  > - Below is the first 10 rows of the grouped by DataFrame with mean calculation.
-
-  ```sql
-  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
-  |   | geolocation_zip_code_prefix | geolocation_lat_mean | geolocation_lng_mean | geolocation_city | geolocation_state |
-  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
-  | 0 | 1001                        | -23.550214793274414  | -46.634018776332134  | sao paulo        | SP                |
-  | 1 | 1001                        | -23.549997981678136  | -46.63406019929013   | são paulo        | SP                |
-  | 2 | 1002                        | -23.548437764688757  | -46.63512916227373   | sao paulo        | SP                |
-  | 3 | 1002                        | -23.54464133666111   | -46.63317979239999   | são paulo        | SP                |
-  | 4 | 1003                        | -23.548988128760268  | -46.63578551623726   | sao paulo        | SP                |
-  | 5 | 1003                        | -23.5490832616594    | -46.63486400979368   | são paulo        | SP                |
-  | 6 | 1004                        | -23.5498127407841    | -46.63477259976395   | sao paulo        | SP                |
-  | 7 | 1004                        | -23.54950697362805   | -46.634428168330544  | são paulo        | SP                |
-  | 8 | 1005                        | -23.549419344825484  | -46.63687812524338   | sao paulo        | SP                |
-  | 9 | 1005                        | -23.549880032391272  | -46.63506341016249   | são paulo        | SP                |
-  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
-  ```
   
 - Checking data type consistency, missing values, and duplicate values after grouping by operation and mean calculation.
-  > - The grouped by DataFrame with mean calculation, however, shows reduced duplicate values.
+  > - The grouped by DataFrame with mean calculation shows reduced duplicate values.
   > - Below is the summary of data types, missing, and duplicate values after grouping by operation and mean calculation.
-
+  
   ```sql
   +---+-----------------------------+-----------+----------------+------------------+
   |   | Column                      | Data Type | Missing Values | Duplicate Values |
@@ -347,5 +328,58 @@ Workflow and output of ETL process for geolocation.csv.
   | 4 | geolocation_state           | object    | 0              | 27885            |
   +---+-----------------------------+-----------+----------------+------------------+
   ```
+
+- Inspecting the grouped by DataFrame with mean calculation
+  > - The grouped by DataFrame with mean calculation highlights inconsistencies in the `geolocation_city` column due to uncleaned data. Variations like `sao paulo` and `são paulo` indicate the reason why duplicate values exist even we have grouped by the DataFrame with mean calculation.
+  > - Below is the first 3 rows of the grouped by DataFrame with mean calculation.
+  
+  ```sql
+  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
+  |   | geolocation_zip_code_prefix | geolocation_lat_mean | geolocation_lng_mean | geolocation_city | geolocation_state |
+  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
+  | 0 | 1001                        | -23.550214793274414  | -46.634018776332134  | sao paulo        | SP                |
+  | 1 | 1001                        | -23.549997981678136  | -46.63406019929013   | são paulo        | SP                |
+  | 2 | 1002                        | -23.548437764688757  | -46.63512916227373   | sao paulo        | SP                |
+  +---+-----------------------------+----------------------+----------------------+------------------+-------------------+
+  ```
+
+  > - Additionally, there are 8011 unique values in `geolocation_city` column, including the variances.
+  > - Below shows the first 20 unique values from the `geolocation_city` column of the grouped by DataFrame with mean calculation.
+  ```sql
+  Unique values in 'geolocation_city' column: 8011
+  +----+------------------------+
+  |    | geolocation_city       |
+  +----+------------------------+
+  | 0  | sao paulo              |
+  | 1  | são paulo              |
+  | 2  | sao bernardo do campo  |
+  | 3  | jundiaí                |
+  | 4  | taboão da serra        |
+  | 5  | sãopaulo               |
+  | 6  | sp                     |
+  | 7  | sa£o paulo             |
+  | 8  | sao jose dos campos    |
+  | 9  | osasco                 |
+  | 10 | carapicuiba            |
+  | 11 | carapicuíba            |
+  | 12 | barueri                |
+  | 13 | santana de parnaiba    |
+  | 14 | santana de parnaíba    |
+  | 15 | pirapora do bom jesus  |
+  | 16 | jandira                |
+  | 17 | itapevi                |
+  | 18 | cotia                  |
+  | 19 | vargem grande paulista |
+  +----+------------------------+
+  ```
+
+- Since the original Kaggle repository lacks a complete list of official Brazilian city names, we will utilize OpenAI to refine the `geolocation_city` to `refined_geolocation_city`.
+  > - Processing the `list_braziliancities.csv` with embeddings and storing in the database.
+  > - Below are the first 3 rows of the `llm_brazil_city_names` table after processing and storing in the database.
+  > - The complete table is available in `llm_brazil_city_names.parquet`.
+
+```sql
+```
+
 <br>
 </details>
